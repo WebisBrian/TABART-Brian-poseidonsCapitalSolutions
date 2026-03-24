@@ -30,7 +30,8 @@ public class CurvePoint {
     @Setter(AccessLevel.NONE)
     private LocalDateTime creationDate;
 
-    public CurvePoint(Double term, Double value) {
+    public CurvePoint(Integer curveId, Double term, Double value) {
+        this.curveId = curveId;
         this.term = term;
         this.value = value;
     }
