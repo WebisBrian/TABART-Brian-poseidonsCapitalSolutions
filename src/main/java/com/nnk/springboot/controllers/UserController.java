@@ -58,10 +58,13 @@ public class UserController {
             return "user/update";
         }
 
+        User existingUser = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        user.setPassword(encoder.encode(user.getPassword()));
-        user.setId(id);
-        userRepository.save(user);
+        existingUser.setUsername(user.getUsername());
+        existingUser.setFullname(user.getFullname());
+        existingUser.setRole(user.getRole());
+        existingUser.setPassword(encoder.encode(user.getPassword()));
+        userRepository.save(existingUser);
         model.addAttribute("users", userRepository.findAll());
         return "redirect:/user/list";
     }
