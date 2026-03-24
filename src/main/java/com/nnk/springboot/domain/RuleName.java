@@ -1,9 +1,26 @@
 package com.nnk.springboot.domain;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
-@Table(name = "rulename")
+@Table(name = "rule_name")
+@Getter
+@Setter
+@NoArgsConstructor
+@EqualsAndHashCode(of = "id")
+@ToString(of = {"id", "name", "description"})
 public class RuleName {
-    // TODO: Map columns in data table RULENAME with corresponding java fields
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter(AccessLevel.NONE)
+    private Integer id;
+
+    private String name;
+    private String description;
+    private String json;
+    private String template;
+    private String sqlStr;
+    private String sqlPart;
 }
