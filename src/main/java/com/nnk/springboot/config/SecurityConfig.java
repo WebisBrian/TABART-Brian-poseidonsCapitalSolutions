@@ -26,6 +26,8 @@ public class SecurityConfig {
      *   <li>Toutes les autres routes : tout utilisateur authentifié ({@code USER} ou {@code ADMIN})</li>
      * </ul>
      *
+     * <p>En cas d'accès refusé (403), l'utilisateur est redirigé vers {@code /app/error}.</p>
+     *
      * @param http l'objet HttpSecurity à configurer
      * @return la SecurityFilterChain configurée
      * @throws Exception en cas d'erreur de configuration
@@ -40,6 +42,9 @@ public class SecurityConfig {
                         .requestMatchers("/login", "/css/**", "/js/**").permitAll()
                         .requestMatchers("/user/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
+                )
+                .exceptionHandling(ex -> ex
+                        .accessDeniedPage("/app/error")
                 )
                 .formLogin(form -> form
                         .defaultSuccessUrl("/bidList/list", true)
