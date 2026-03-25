@@ -82,6 +82,31 @@ class BidListServiceTest {
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
+    // --- update ---
+
+    @Test
+    void update_whenIdExists_shouldUpdateFields() {
+        BidList existing = new BidList("OldAccount", "OldType", 5.0);
+        BidList form = new BidList("NewAccount", "NewType", 20.0);
+        when(bidListRepository.findById(1)).thenReturn(Optional.of(existing));
+        when(bidListRepository.save(any(BidList.class))).thenReturn(existing);
+
+        bidListService.update(1, form);
+
+        assertThat(existing.getAccount()).isEqualTo("NewAccount");
+        assertThat(existing.getType()).isEqualTo("NewType");
+        assertThat(existing.getBidQuantity()).isEqualTo(20.0);
+        verify(bidListRepository, times(1)).save(existing);
+    }
+
+    @Test
+    void update_whenIdNotFound_shouldThrowException() {
+        when(bidListRepository.findById(99)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> bidListService.update(99, new BidList()))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
+
     // --- delete ---
 
     @Test

@@ -98,6 +98,33 @@ class UserServiceTest {
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
+    // --- update ---
+
+    @Test
+    void update_whenIdExists_shouldUpdateFieldsAndEncodePassword() {
+        User existing = new User("old", "OldPassword1!", "Old Name", "USER");
+        User form = new User("john", "NewPassword1!", "John Doe", "ADMIN");
+        when(userRepository.findById(1)).thenReturn(Optional.of(existing));
+        when(passwordEncoder.encode("NewPassword1!")).thenReturn("$2a$hashed");
+        when(userRepository.save(any(User.class))).thenReturn(existing);
+
+        userService.update(1, form);
+
+        assertThat(existing.getUsername()).isEqualTo("john");
+        assertThat(existing.getFullname()).isEqualTo("John Doe");
+        assertThat(existing.getRole()).isEqualTo("ADMIN");
+        assertThat(existing.getPassword()).isEqualTo("$2a$hashed");
+        verify(userRepository, times(1)).save(existing);
+    }
+
+    @Test
+    void update_whenIdNotFound_shouldThrowException() {
+        when(userRepository.findById(99)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> userService.update(99, new User()))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
+
     // --- delete ---
 
     @Test

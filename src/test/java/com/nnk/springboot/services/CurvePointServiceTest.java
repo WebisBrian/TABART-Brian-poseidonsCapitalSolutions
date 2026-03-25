@@ -82,6 +82,31 @@ class CurvePointServiceTest {
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
+    // --- update ---
+
+    @Test
+    void update_whenIdExists_shouldUpdateFields() {
+        CurvePoint existing = new CurvePoint(1, 1.0, 1.0);
+        CurvePoint form = new CurvePoint(10, 10.0, 30.0);
+        when(curvePointRepository.findById(1)).thenReturn(Optional.of(existing));
+        when(curvePointRepository.save(any(CurvePoint.class))).thenReturn(existing);
+
+        curvePointService.update(1, form);
+
+        assertThat(existing.getCurveId()).isEqualTo(10);
+        assertThat(existing.getTerm()).isEqualTo(10.0);
+        assertThat(existing.getValue()).isEqualTo(30.0);
+        verify(curvePointRepository, times(1)).save(existing);
+    }
+
+    @Test
+    void update_whenIdNotFound_shouldThrowException() {
+        when(curvePointRepository.findById(99)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> curvePointService.update(99, new CurvePoint()))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
+
     // --- delete ---
 
     @Test

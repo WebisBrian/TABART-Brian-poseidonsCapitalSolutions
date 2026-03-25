@@ -82,6 +82,32 @@ class RatingServiceTest {
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
+    // --- update ---
+
+    @Test
+    void update_whenIdExists_shouldUpdateFields() {
+        Rating existing = new Rating("OldMoodys", "OldSandP", "OldFitch", 1);
+        Rating form = new Rating("Moodys Rating", "Sand PRating", "Fitch Rating", 10);
+        when(ratingRepository.findById(1)).thenReturn(Optional.of(existing));
+        when(ratingRepository.save(any(Rating.class))).thenReturn(existing);
+
+        ratingService.update(1, form);
+
+        assertThat(existing.getMoodysRating()).isEqualTo("Moodys Rating");
+        assertThat(existing.getSandPRating()).isEqualTo("Sand PRating");
+        assertThat(existing.getFitchRating()).isEqualTo("Fitch Rating");
+        assertThat(existing.getOrderNumber()).isEqualTo(10);
+        verify(ratingRepository, times(1)).save(existing);
+    }
+
+    @Test
+    void update_whenIdNotFound_shouldThrowException() {
+        when(ratingRepository.findById(99)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> ratingService.update(99, new Rating()))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
+
     // --- delete ---
 
     @Test

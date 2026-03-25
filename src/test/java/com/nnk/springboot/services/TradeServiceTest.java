@@ -82,6 +82,31 @@ class TradeServiceTest {
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
+    // --- update ---
+
+    @Test
+    void update_whenIdExists_shouldUpdateFields() {
+        Trade existing = new Trade("OldAccount", "OldType", 5.0);
+        Trade form = new Trade("NewAccount", "NewType", 20.0);
+        when(tradeRepository.findById(1)).thenReturn(Optional.of(existing));
+        when(tradeRepository.save(any(Trade.class))).thenReturn(existing);
+
+        tradeService.update(1, form);
+
+        assertThat(existing.getAccount()).isEqualTo("NewAccount");
+        assertThat(existing.getType()).isEqualTo("NewType");
+        assertThat(existing.getBuyQuantity()).isEqualTo(20.0);
+        verify(tradeRepository, times(1)).save(existing);
+    }
+
+    @Test
+    void update_whenIdNotFound_shouldThrowException() {
+        when(tradeRepository.findById(99)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> tradeService.update(99, new Trade()))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
+
     // --- delete ---
 
     @Test

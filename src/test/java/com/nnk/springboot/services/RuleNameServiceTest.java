@@ -82,6 +82,34 @@ class RuleNameServiceTest {
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 
+    // --- update ---
+
+    @Test
+    void update_whenIdExists_shouldUpdateFields() {
+        RuleName existing = new RuleName("OldName", "OldDesc", "", "", "", "");
+        RuleName form = new RuleName("Rule Name", "Description", "Json", "Template", "SQL", "SQL Part");
+        when(ruleNameRepository.findById(1)).thenReturn(Optional.of(existing));
+        when(ruleNameRepository.save(any(RuleName.class))).thenReturn(existing);
+
+        ruleNameService.update(1, form);
+
+        assertThat(existing.getName()).isEqualTo("Rule Name");
+        assertThat(existing.getDescription()).isEqualTo("Description");
+        assertThat(existing.getJson()).isEqualTo("Json");
+        assertThat(existing.getTemplate()).isEqualTo("Template");
+        assertThat(existing.getSqlStr()).isEqualTo("SQL");
+        assertThat(existing.getSqlPart()).isEqualTo("SQL Part");
+        verify(ruleNameRepository, times(1)).save(existing);
+    }
+
+    @Test
+    void update_whenIdNotFound_shouldThrowException() {
+        when(ruleNameRepository.findById(99)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> ruleNameService.update(99, new RuleName()))
+                .isInstanceOf(ResourceNotFoundException.class);
+    }
+
     // --- delete ---
 
     @Test
