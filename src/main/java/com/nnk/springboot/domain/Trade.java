@@ -2,6 +2,7 @@ package com.nnk.springboot.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -28,9 +29,16 @@ public class Trade {
     @Column(nullable = false)
     private String type;
 
+    @PositiveOrZero(message = "Buy quantity must be zero or positive")
     private Double buyQuantity;
+
+    @PositiveOrZero(message = "Sell quantity must be zero or positive")
     private Double sellQuantity;
+
+    @PositiveOrZero(message = "Buy price must be zero or positive")
     private Double buyPrice;
+
+    @PositiveOrZero(message = "Sell price must be zero or positive")
     private Double sellPrice;
     private LocalDateTime tradeDate;
     private String security;

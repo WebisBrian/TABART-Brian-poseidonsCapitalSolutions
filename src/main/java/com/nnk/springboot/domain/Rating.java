@@ -2,6 +2,7 @@ package com.nnk.springboot.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.*;
 
 @Entity
@@ -23,6 +24,7 @@ public class Rating {
     private String fitchRating;
 
     @NotNull(message = "Order number is mandatory")
+    @Positive(message = "Order number must be positive")
     private Integer orderNumber;
 
     public Rating(String moodysRating, String sandPRating, String fitchRating, Integer orderNumber) {

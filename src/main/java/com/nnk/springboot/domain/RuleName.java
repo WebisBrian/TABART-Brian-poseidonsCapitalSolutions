@@ -1,6 +1,7 @@
 package com.nnk.springboot.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
@@ -17,7 +18,9 @@ public class RuleName {
     @Setter(AccessLevel.NONE)
     private Integer id;
 
+    @NotBlank(message = "Name is mandatory")
     private String name;
+
     private String description;
     private String json;
     private String template;

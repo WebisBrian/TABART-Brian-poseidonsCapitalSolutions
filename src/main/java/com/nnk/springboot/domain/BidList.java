@@ -2,6 +2,7 @@ package com.nnk.springboot.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -31,10 +32,18 @@ public class BidList {
     @Size(max = 30)
     private String type;
 
+    @PositiveOrZero(message = "Bid quantity must be zero or positive")
     private Double bidQuantity;
+
+    @PositiveOrZero(message = "Ask quantity must be zero or positive")
     private Double askQuantity;
+
+    @PositiveOrZero(message = "Bid price must be zero or positive")
     private Double bid;
+
+    @PositiveOrZero(message = "Ask price must be zero or positive")
     private Double ask;
+
     private String benchmark;
     private LocalDateTime bidListDate;
     private String commentary;

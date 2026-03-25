@@ -2,6 +2,7 @@ package com.nnk.springboot.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -24,7 +25,10 @@ public class CurvePoint {
     private Integer curveId;
 
     private LocalDateTime asOfDate;
+
+    @PositiveOrZero(message = "Term must be zero or positive")
     private Double term;
+
     private Double value;
 
     @Setter(AccessLevel.NONE)
