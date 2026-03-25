@@ -29,6 +29,7 @@ public class CurvePoint {
     @PositiveOrZero(message = "Term must be zero or positive")
     private Double term;
 
+    @Column(name = "point_value")
     private Double value;
 
     @Setter(AccessLevel.NONE)
