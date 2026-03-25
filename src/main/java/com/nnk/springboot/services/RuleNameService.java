@@ -4,6 +4,7 @@ import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.RuleNameRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,19 +17,23 @@ public class RuleNameService {
         this.ruleNameRepository = ruleNameRepository;
     }
 
+    @Transactional(readOnly = true)
     public List<RuleName> findAll() {
         return ruleNameRepository.findAll();
     }
 
+    @Transactional
     public RuleName save(RuleName ruleName) {
         return ruleNameRepository.save(ruleName);
     }
 
+    @Transactional(readOnly = true)
     public RuleName findById(Integer id) {
         return ruleNameRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("RuleName not found for id: " + id));
     }
 
+    @Transactional
     public RuleName update(Integer id, RuleName form) {
         RuleName existing = findById(id);
         existing.setName(form.getName());
@@ -40,6 +45,7 @@ public class RuleNameService {
         return ruleNameRepository.save(existing);
     }
 
+    @Transactional
     public void delete(Integer id) {
         RuleName ruleName = findById(id);
         ruleNameRepository.delete(ruleName);

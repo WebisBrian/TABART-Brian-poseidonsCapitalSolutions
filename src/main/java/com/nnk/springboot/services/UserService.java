@@ -5,6 +5,7 @@ import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class UserService {
      *
      * @return liste de tous les utilisateurs
      */
+    @Transactional(readOnly = true)
     public List<User> findAll() {
         return userRepository.findAll();
     }
@@ -35,6 +37,7 @@ public class UserService {
      * @param user l'utilisateur à sauvegarder (mot de passe en clair)
      * @return l'utilisateur persisté
      */
+    @Transactional
     public User save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
@@ -47,6 +50,7 @@ public class UserService {
      * @return l'utilisateur trouvé
      * @throws ResourceNotFoundException si aucun utilisateur n'est trouvé pour cet id
      */
+    @Transactional(readOnly = true)
     public User findById(Integer id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found for id: " + id));
@@ -61,6 +65,7 @@ public class UserService {
      * @return l'utilisateur mis à jour et persisté
      * @throws ResourceNotFoundException si aucun utilisateur n'est trouvé pour cet id
      */
+    @Transactional
     public User update(Integer id, User form) {
         User existing = findById(id);
         existing.setUsername(form.getUsername());
@@ -76,6 +81,7 @@ public class UserService {
      * @param id l'identifiant de l'utilisateur à supprimer
      * @throws ResourceNotFoundException si aucun utilisateur n'est trouvé pour cet id
      */
+    @Transactional
     public void delete(Integer id) {
         User user = findById(id);
         userRepository.delete(user);
