@@ -1,0 +1,103 @@
+package com.nnk.springboot.services;
+
+import com.nnk.springboot.domain.BidList;
+import com.nnk.springboot.repositories.BidListRepository;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+class BidListServiceTest {
+
+    @Mock
+    private BidListRepository bidListRepository;
+
+    @InjectMocks
+    private BidListService bidListService;
+
+    // --- findAll ---
+
+    @Test
+    void findAll_whenRepositoryReturnsItems_shouldReturnList() {
+        BidList bid = new BidList("Account", "Type", 10.0);
+        when(bidListRepository.findAll()).thenReturn(List.of(bid));
+
+        List<BidList> result = bidListService.findAll();
+
+        assertThat(result).hasSize(1);
+        assertThat(result.getFirst().getAccount()).isEqualTo("Account");
+    }
+
+    @Test
+    void findAll_whenRepositoryReturnsEmpty_shouldReturnEmptyList() {
+        when(bidListRepository.findAll()).thenReturn(List.of());
+
+        List<BidList> result = bidListService.findAll();
+
+        assertThat(result).isEmpty();
+    }
+
+    // --- save ---
+
+    @Test
+    void save_whenValidBid_shouldPersistAndReturn() {
+        BidList bid = new BidList("Account", "Type", 10.0);
+        when(bidListRepository.save(any(BidList.class))).thenReturn(bid);
+
+        BidList result = bidListService.save(bid);
+
+        assertThat(result).isNotNull();
+        assertThat(result.getAccount()).isEqualTo("Account");
+        verify(bidListRepository, times(1)).save(bid);
+    }
+
+    // --- findById ---
+
+    @Test
+    void findById_whenIdExists_shouldReturnBidList() {
+        BidList bid = new BidList("Account", "Type", 10.0);
+        when(bidListRepository.findById(1)).thenReturn(Optional.of(bid));
+
+        BidList result = bidListService.findById(1);
+
+        assertThat(result.getAccount()).isEqualTo("Account");
+    }
+
+    @Test
+    void findById_whenIdNotFound_shouldThrowException() {
+        when(bidListRepository.findById(99)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> bidListService.findById(99))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+
+    // --- delete ---
+
+    @Test
+    void delete_whenIdExists_shouldCallRepositoryDelete() {
+        BidList bid = new BidList("Account", "Type", 10.0);
+        when(bidListRepository.findById(1)).thenReturn(Optional.of(bid));
+
+        bidListService.delete(1);
+
+        verify(bidListRepository, times(1)).delete(bid);
+    }
+
+    @Test
+    void delete_whenIdNotFound_shouldThrowException() {
+        when(bidListRepository.findById(99)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> bidListService.delete(99))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
+}
