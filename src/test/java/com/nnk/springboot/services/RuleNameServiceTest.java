@@ -1,6 +1,7 @@
 package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.RuleName;
+import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.RuleNameRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -78,7 +79,7 @@ class RuleNameServiceTest {
         when(ruleNameRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> ruleNameService.findById(99))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     // --- delete ---
@@ -98,6 +99,6 @@ class RuleNameServiceTest {
         when(ruleNameRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> ruleNameService.delete(99))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 }

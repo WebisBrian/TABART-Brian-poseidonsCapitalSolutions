@@ -1,6 +1,7 @@
 package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.User;
+import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -94,7 +95,7 @@ class UserServiceTest {
         when(userRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> userService.findById(99))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     // --- delete ---
@@ -114,6 +115,6 @@ class UserServiceTest {
         when(userRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> userService.delete(99))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 }

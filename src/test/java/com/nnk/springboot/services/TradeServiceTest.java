@@ -1,6 +1,7 @@
 package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.Trade;
+import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.TradeRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -78,7 +79,7 @@ class TradeServiceTest {
         when(tradeRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> tradeService.findById(99))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     // --- delete ---
@@ -98,6 +99,6 @@ class TradeServiceTest {
         when(tradeRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> tradeService.delete(99))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 }

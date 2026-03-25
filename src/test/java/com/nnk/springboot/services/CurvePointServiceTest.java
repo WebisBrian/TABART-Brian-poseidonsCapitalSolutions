@@ -1,6 +1,7 @@
 package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.CurvePoint;
+import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.CurvePointRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -78,7 +79,7 @@ class CurvePointServiceTest {
         when(curvePointRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> curvePointService.findById(99))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 
     // --- delete ---
@@ -98,6 +99,6 @@ class CurvePointServiceTest {
         when(curvePointRepository.findById(99)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> curvePointService.delete(99))
-                .isInstanceOf(IllegalArgumentException.class);
+                .isInstanceOf(ResourceNotFoundException.class);
     }
 }
