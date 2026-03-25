@@ -1,6 +1,7 @@
 package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.CurvePoint;
+import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.CurvePointRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class CurvePointService {
 
     public CurvePoint findById(Integer id) {
         return curvePointRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("CurvePoint not found for id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("CurvePoint not found for id: " + id));
     }
 
     public void delete(Integer id) {

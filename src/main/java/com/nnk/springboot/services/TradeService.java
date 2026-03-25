@@ -1,6 +1,7 @@
 package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.Trade;
+import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.TradeRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class TradeService {
 
     public Trade findById(Integer id) {
         return tradeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Trade not found for id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Trade not found for id: " + id));
     }
 
     public void delete(Integer id) {

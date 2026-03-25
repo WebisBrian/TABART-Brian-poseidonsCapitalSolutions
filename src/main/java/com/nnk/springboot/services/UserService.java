@@ -1,6 +1,7 @@
 package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.User;
+import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -44,18 +45,18 @@ public class UserService {
      *
      * @param id l'identifiant de l'utilisateur
      * @return l'utilisateur trouvé
-     * @throws IllegalArgumentException si aucun utilisateur n'est trouvé pour cet id
+     * @throws ResourceNotFoundException si aucun utilisateur n'est trouvé pour cet id
      */
     public User findById(Integer id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User not found for id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found for id: " + id));
     }
 
     /**
      * Supprime un utilisateur par son identifiant.
      *
      * @param id l'identifiant de l'utilisateur à supprimer
-     * @throws IllegalArgumentException si aucun utilisateur n'est trouvé pour cet id
+     * @throws ResourceNotFoundException si aucun utilisateur n'est trouvé pour cet id
      */
     public void delete(Integer id) {
         User user = findById(id);

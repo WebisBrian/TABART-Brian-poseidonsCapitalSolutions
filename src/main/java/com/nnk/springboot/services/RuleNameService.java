@@ -1,6 +1,7 @@
 package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.RuleName;
+import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.RuleNameRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class RuleNameService {
 
     public RuleName findById(Integer id) {
         return ruleNameRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("RuleName not found for id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("RuleName not found for id: " + id));
     }
 
     public void delete(Integer id) {

@@ -1,6 +1,7 @@
 package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.BidList;
+import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.BidListRepository;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +26,7 @@ public class BidListService {
 
     public BidList findById(Integer id) {
         return bidListRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("BidList not found for id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("BidList not found for id: " + id));
     }
 
     public void delete(Integer id) {
