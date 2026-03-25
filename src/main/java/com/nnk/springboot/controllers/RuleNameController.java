@@ -52,14 +52,7 @@ public class RuleNameController {
         if (result.hasErrors()) {
             return "ruleName/update";
         }
-        RuleName existing = ruleNameService.findById(id);
-        existing.setName(form.getName());
-        existing.setDescription(form.getDescription());
-        existing.setJson(form.getJson());
-        existing.setTemplate(form.getTemplate());
-        existing.setSqlStr(form.getSqlStr());
-        existing.setSqlPart(form.getSqlPart());
-        ruleNameService.save(existing);
+        ruleNameService.update(id, form);
         return "redirect:/ruleName/list";
     }
 

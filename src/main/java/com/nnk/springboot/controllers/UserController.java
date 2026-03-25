@@ -54,12 +54,7 @@ public class UserController {
         if (result.hasErrors()) {
             return "user/update";
         }
-        User existing = userService.findById(id);
-        existing.setUsername(form.getUsername());
-        existing.setFullname(form.getFullname());
-        existing.setRole(form.getRole());
-        existing.setPassword(form.getPassword());
-        userService.save(existing);
+        userService.update(id, form);
         return "redirect:/user/list";
     }
 

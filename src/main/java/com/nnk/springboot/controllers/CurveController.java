@@ -52,12 +52,7 @@ public class CurveController {
         if (result.hasErrors()) {
             return "curvePoint/update";
         }
-        CurvePoint existing = curvePointService.findById(id);
-        existing.setCurveId(form.getCurveId());
-        existing.setAsOfDate(form.getAsOfDate());
-        existing.setTerm(form.getTerm());
-        existing.setValue(form.getValue());
-        curvePointService.save(existing);
+        curvePointService.update(id, form);
         return "redirect:/curvePoint/list";
     }
 

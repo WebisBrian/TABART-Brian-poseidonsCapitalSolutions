@@ -52,12 +52,7 @@ public class RatingController {
         if (result.hasErrors()) {
             return "rating/update";
         }
-        Rating existing = ratingService.findById(id);
-        existing.setMoodysRating(form.getMoodysRating());
-        existing.setSandPRating(form.getSandPRating());
-        existing.setFitchRating(form.getFitchRating());
-        existing.setOrderNumber(form.getOrderNumber());
-        ratingService.save(existing);
+        ratingService.update(id, form);
         return "redirect:/rating/list";
     }
 

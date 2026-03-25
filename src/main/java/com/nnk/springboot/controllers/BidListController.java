@@ -52,11 +52,7 @@ public class BidListController {
         if (result.hasErrors()) {
             return "bidList/update";
         }
-        BidList existing = bidListService.findById(id);
-        existing.setAccount(form.getAccount());
-        existing.setType(form.getType());
-        existing.setBidQuantity(form.getBidQuantity());
-        bidListService.save(existing);
+        bidListService.update(id, form);
         return "redirect:/bidList/list";
     }
 

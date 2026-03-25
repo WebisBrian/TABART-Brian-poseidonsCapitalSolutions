@@ -52,11 +52,7 @@ public class TradeController {
         if (result.hasErrors()) {
             return "trade/update";
         }
-        Trade existing = tradeService.findById(id);
-        existing.setAccount(form.getAccount());
-        existing.setType(form.getType());
-        existing.setBuyQuantity(form.getBuyQuantity());
-        tradeService.save(existing);
+        tradeService.update(id, form);
         return "redirect:/trade/list";
     }
 
