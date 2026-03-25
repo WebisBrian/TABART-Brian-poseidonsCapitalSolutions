@@ -33,4 +33,11 @@ class RuleNameValidationTest {
         Set<ConstraintViolation<RuleName>> violations = validator.validate(rule);
         assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("name"));
     }
+
+    @Test
+    void ruleName_whenNameTooLong_shouldFailValidation() {
+        RuleName rule = new RuleName("N".repeat(126), "Description", "Json", "Template", "SQL", "SQL Part");
+        Set<ConstraintViolation<RuleName>> violations = validator.validate(rule);
+        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("name"));
+    }
 }

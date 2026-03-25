@@ -53,4 +53,28 @@ class BidListValidationTest {
         BidList bid = new BidList("Account", "Type", 0.0);
         assertThat(validator.validate(bid)).isEmpty();
     }
+
+    // --- @Size ---
+
+    @Test
+    void bidList_whenAccountTooLong_shouldFailValidation() {
+        BidList bid = new BidList("A".repeat(31), "Type", 10.0);
+        Set<ConstraintViolation<BidList>> violations = validator.validate(bid);
+        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("account"));
+    }
+
+    @Test
+    void bidList_whenTypeTooLong_shouldFailValidation() {
+        BidList bid = new BidList("Account", "T".repeat(31), 10.0);
+        Set<ConstraintViolation<BidList>> violations = validator.validate(bid);
+        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("type"));
+    }
+
+    @Test
+    void bidList_whenStatusTooLong_shouldFailValidation() {
+        BidList bid = new BidList("Account", "Type", 10.0);
+        bid.setStatus("S".repeat(11));
+        Set<ConstraintViolation<BidList>> violations = validator.validate(bid);
+        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("status"));
+    }
 }

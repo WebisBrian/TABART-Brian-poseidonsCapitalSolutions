@@ -53,4 +53,28 @@ class TradeValidationTest {
         Trade trade = new Trade("Account", "Type", 0.0);
         assertThat(validator.validate(trade)).isEmpty();
     }
+
+    // --- @Size ---
+
+    @Test
+    void trade_whenAccountTooLong_shouldFailValidation() {
+        Trade trade = new Trade("A".repeat(31), "Type", 10.0);
+        Set<ConstraintViolation<Trade>> violations = validator.validate(trade);
+        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("account"));
+    }
+
+    @Test
+    void trade_whenTypeTooLong_shouldFailValidation() {
+        Trade trade = new Trade("Account", "T".repeat(31), 10.0);
+        Set<ConstraintViolation<Trade>> violations = validator.validate(trade);
+        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("type"));
+    }
+
+    @Test
+    void trade_whenStatusTooLong_shouldFailValidation() {
+        Trade trade = new Trade("Account", "Type", 10.0);
+        trade.setStatus("S".repeat(11));
+        Set<ConstraintViolation<Trade>> violations = validator.validate(trade);
+        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("status"));
+    }
 }

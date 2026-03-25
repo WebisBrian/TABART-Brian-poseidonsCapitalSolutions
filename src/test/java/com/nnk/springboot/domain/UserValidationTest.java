@@ -36,6 +36,13 @@ class UserValidationTest {
         assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("username"));
     }
 
+    @Test
+    void user_whenUsernameTooLong_shouldFailValidation() {
+        User user = new User("u".repeat(126), "Password1!", "John Doe", "USER");
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("username"));
+    }
+
     // --- fullname ---
 
     @Test
@@ -45,11 +52,25 @@ class UserValidationTest {
         assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("fullname"));
     }
 
+    @Test
+    void user_whenFullnameTooLong_shouldFailValidation() {
+        User user = new User("john", "Password1!", "F".repeat(126), "USER");
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("fullname"));
+    }
+
     // --- role ---
 
     @Test
     void user_whenRoleIsBlank_shouldFailValidation() {
         User user = new User("john", "Password1!", "John Doe", "");
+        Set<ConstraintViolation<User>> violations = validator.validate(user);
+        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("role"));
+    }
+
+    @Test
+    void user_whenRoleTooLong_shouldFailValidation() {
+        User user = new User("john", "Password1!", "John Doe", "R".repeat(126));
         Set<ConstraintViolation<User>> violations = validator.validate(user);
         assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("role"));
     }
