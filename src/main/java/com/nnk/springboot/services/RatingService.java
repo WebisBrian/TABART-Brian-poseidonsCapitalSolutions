@@ -29,6 +29,15 @@ public class RatingService {
                 .orElseThrow(() -> new ResourceNotFoundException("Rating not found for id: " + id));
     }
 
+    public Rating update(Integer id, Rating form) {
+        Rating existing = findById(id);
+        existing.setMoodysRating(form.getMoodysRating());
+        existing.setSandPRating(form.getSandPRating());
+        existing.setFitchRating(form.getFitchRating());
+        existing.setOrderNumber(form.getOrderNumber());
+        return ratingRepository.save(existing);
+    }
+
     public void delete(Integer id) {
         Rating rating = findById(id);
         ratingRepository.delete(rating);

@@ -29,6 +29,14 @@ public class BidListService {
                 .orElseThrow(() -> new ResourceNotFoundException("BidList not found for id: " + id));
     }
 
+    public BidList update(Integer id, BidList form) {
+        BidList existing = findById(id);
+        existing.setAccount(form.getAccount());
+        existing.setType(form.getType());
+        existing.setBidQuantity(form.getBidQuantity());
+        return bidListRepository.save(existing);
+    }
+
     public void delete(Integer id) {
         BidList bidList = findById(id);
         bidListRepository.delete(bidList);

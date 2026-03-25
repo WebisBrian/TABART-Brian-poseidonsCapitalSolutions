@@ -29,6 +29,15 @@ public class CurvePointService {
                 .orElseThrow(() -> new ResourceNotFoundException("CurvePoint not found for id: " + id));
     }
 
+    public CurvePoint update(Integer id, CurvePoint form) {
+        CurvePoint existing = findById(id);
+        existing.setCurveId(form.getCurveId());
+        existing.setAsOfDate(form.getAsOfDate());
+        existing.setTerm(form.getTerm());
+        existing.setValue(form.getValue());
+        return curvePointRepository.save(existing);
+    }
+
     public void delete(Integer id) {
         CurvePoint curvePoint = findById(id);
         curvePointRepository.delete(curvePoint);

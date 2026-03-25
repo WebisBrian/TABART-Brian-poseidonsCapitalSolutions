@@ -29,6 +29,14 @@ public class TradeService {
                 .orElseThrow(() -> new ResourceNotFoundException("Trade not found for id: " + id));
     }
 
+    public Trade update(Integer id, Trade form) {
+        Trade existing = findById(id);
+        existing.setAccount(form.getAccount());
+        existing.setType(form.getType());
+        existing.setBuyQuantity(form.getBuyQuantity());
+        return tradeRepository.save(existing);
+    }
+
     public void delete(Integer id) {
         Trade trade = findById(id);
         tradeRepository.delete(trade);

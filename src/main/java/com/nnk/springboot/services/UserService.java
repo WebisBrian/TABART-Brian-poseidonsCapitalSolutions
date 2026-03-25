@@ -53,6 +53,24 @@ public class UserService {
     }
 
     /**
+     * Met à jour les informations d'un utilisateur existant.
+     * Le mot de passe fourni en clair est encodé avant persistance.
+     *
+     * @param id   l'identifiant de l'utilisateur à mettre à jour
+     * @param form les nouvelles valeurs à appliquer
+     * @return l'utilisateur mis à jour et persisté
+     * @throws ResourceNotFoundException si aucun utilisateur n'est trouvé pour cet id
+     */
+    public User update(Integer id, User form) {
+        User existing = findById(id);
+        existing.setUsername(form.getUsername());
+        existing.setFullname(form.getFullname());
+        existing.setRole(form.getRole());
+        existing.setPassword(form.getPassword());
+        return save(existing);
+    }
+
+    /**
      * Supprime un utilisateur par son identifiant.
      *
      * @param id l'identifiant de l'utilisateur à supprimer

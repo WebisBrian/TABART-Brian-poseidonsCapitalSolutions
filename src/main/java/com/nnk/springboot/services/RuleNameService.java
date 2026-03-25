@@ -29,6 +29,17 @@ public class RuleNameService {
                 .orElseThrow(() -> new ResourceNotFoundException("RuleName not found for id: " + id));
     }
 
+    public RuleName update(Integer id, RuleName form) {
+        RuleName existing = findById(id);
+        existing.setName(form.getName());
+        existing.setDescription(form.getDescription());
+        existing.setJson(form.getJson());
+        existing.setTemplate(form.getTemplate());
+        existing.setSqlStr(form.getSqlStr());
+        existing.setSqlPart(form.getSqlPart());
+        return ruleNameRepository.save(existing);
+    }
+
     public void delete(Integer id) {
         RuleName ruleName = findById(id);
         ruleNameRepository.delete(ruleName);
