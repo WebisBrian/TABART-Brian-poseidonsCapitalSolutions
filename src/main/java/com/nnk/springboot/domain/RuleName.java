@@ -2,6 +2,7 @@ package com.nnk.springboot.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Entity
@@ -19,12 +20,19 @@ public class RuleName {
     private Integer id;
 
     @NotBlank(message = "Name is mandatory")
+    @Size(max = 125)
+    @Column(nullable = false, length = 125)
     private String name;
 
+    @Column(length = 125)
     private String description;
+    @Column(length = 125)
     private String json;
+    @Column(length = 512)
     private String template;
+    @Column(length = 125)
     private String sqlStr;
+    @Column(length = 125)
     private String sqlPart;
 
     public RuleName(String name, String description, String json, String template, String sqlStr, String sqlPart) {

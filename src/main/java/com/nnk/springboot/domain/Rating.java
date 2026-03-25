@@ -19,12 +19,16 @@ public class Rating {
     @Setter(AccessLevel.NONE)
     private Integer id;
 
+    @Column(length = 125)
     private String moodysRating;
+    @Column(length = 125)
     private String sandPRating;
+    @Column(length = 125)
     private String fitchRating;
 
     @NotNull(message = "Order number is mandatory")
     @Positive(message = "Order number must be positive")
+    @Column(nullable = false)
     private Integer orderNumber;
 
     public Rating(String moodysRating, String sandPRating, String fitchRating, Integer orderNumber) {

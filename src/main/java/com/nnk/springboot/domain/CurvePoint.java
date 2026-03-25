@@ -22,6 +22,7 @@ public class CurvePoint {
     private Integer id;
 
     @NotNull(message = "Curve Id is mandatory")
+    @Column(nullable = false)
     private Integer curveId;
 
     private LocalDateTime asOfDate;
