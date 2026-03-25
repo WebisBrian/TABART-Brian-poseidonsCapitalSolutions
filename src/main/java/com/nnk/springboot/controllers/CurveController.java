@@ -9,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class CurveController {
@@ -20,7 +19,7 @@ public class CurveController {
         this.curvePointService = curvePointService;
     }
 
-    @RequestMapping("/curvePoint/list")
+    @GetMapping("/curvePoint/list")
     public String home(Model model) {
         model.addAttribute("curvePoints", curvePointService.findAll());
         return "curvePoint/list";
