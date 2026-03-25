@@ -26,12 +26,16 @@ public class RuleName {
 
     @Column(length = 125)
     private String description;
+
     @Column(length = 125)
     private String json;
+
     @Column(length = 512)
     private String template;
+
     @Column(length = 125)
     private String sqlStr;
+
     @Column(length = 125)
     private String sqlPart;
 

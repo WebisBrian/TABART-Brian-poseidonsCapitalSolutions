@@ -21,8 +21,10 @@ public class Rating {
 
     @Column(length = 125)
     private String moodysRating;
+
     @Column(length = 125)
     private String sandPRating;
+
     @Column(length = 125)
     private String fitchRating;
 

@@ -46,9 +46,12 @@ public class BidList {
 
     @Column(length = 125)
     private String benchmark;
+
     private LocalDateTime bidListDate;
+
     @Column(length = 125)
     private String commentary;
+
     @Column(length = 125)
     private String security;
 
@@ -58,8 +61,10 @@ public class BidList {
 
     @Column(length = 125)
     private String trader;
+
     @Column(length = 125)
     private String book;
+
     @Column(length = 125)
     private String creationName;
 
@@ -74,10 +79,13 @@ public class BidList {
 
     @Column(length = 125)
     private String dealName;
+
     @Column(length = 125)
     private String dealType;
+
     @Column(length = 125)
     private String sourceListId;
+
     @Column(length = 125)
     private String side;
 

@@ -30,6 +30,7 @@ public class User {
             regexp = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[^a-zA-Z0-9]).{8,}$",
             message = "Password must be at least 8 characters and include an uppercase letter, a digit, and a special character"
     )
+
     @Column(nullable = false, length = 125)
     private String password;
 

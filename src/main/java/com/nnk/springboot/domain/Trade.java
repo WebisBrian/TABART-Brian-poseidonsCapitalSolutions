@@ -43,18 +43,25 @@ public class Trade {
 
     @PositiveOrZero(message = "Sell price must be zero or positive")
     private Double sellPrice;
+
     private LocalDateTime tradeDate;
+
     @Column(length = 125)
     private String security;
+
     @Size(max = 10)
     @Column(length = 10)
     private String status;
+
     @Column(length = 125)
     private String trader;
+
     @Column(length = 125)
     private String benchmark;
+
     @Column(length = 125)
     private String book;
+
     @Column(length = 125)
     private String creationName;
 
@@ -69,10 +76,13 @@ public class Trade {
 
     @Column(length = 125)
     private String dealName;
+
     @Column(length = 125)
     private String dealType;
+
     @Column(length = 125)
     private String sourceListId;
+
     @Column(length = 125)
     private String side;
 
