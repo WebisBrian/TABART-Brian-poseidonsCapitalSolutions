@@ -42,7 +42,7 @@ public class RuleNameService {
         existing.setTemplate(form.getTemplate());
         existing.setSqlStr(form.getSqlStr());
         existing.setSqlPart(form.getSqlPart());
-        return ruleNameRepository.save(existing);
+        return existing;
     }
 
     @Transactional

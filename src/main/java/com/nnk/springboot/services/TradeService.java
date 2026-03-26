@@ -39,7 +39,7 @@ public class TradeService {
         existing.setAccount(form.getAccount());
         existing.setType(form.getType());
         existing.setBuyQuantity(form.getBuyQuantity());
-        return tradeRepository.save(existing);
+        return existing;
     }
 
     @Transactional

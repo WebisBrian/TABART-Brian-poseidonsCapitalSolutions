@@ -39,7 +39,7 @@ public class BidListService {
         existing.setAccount(form.getAccount());
         existing.setType(form.getType());
         existing.setBidQuantity(form.getBidQuantity());
-        return bidListRepository.save(existing);
+        return existing;
     }
 
     @Transactional

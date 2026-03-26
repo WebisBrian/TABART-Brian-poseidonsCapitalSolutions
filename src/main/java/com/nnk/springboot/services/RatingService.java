@@ -40,7 +40,7 @@ public class RatingService {
         existing.setSandPRating(form.getSandPRating());
         existing.setFitchRating(form.getFitchRating());
         existing.setOrderNumber(form.getOrderNumber());
-        return ratingRepository.save(existing);
+        return existing;
     }
 
     @Transactional

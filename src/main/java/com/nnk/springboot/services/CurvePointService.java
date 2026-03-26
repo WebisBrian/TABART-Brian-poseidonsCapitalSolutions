@@ -40,7 +40,7 @@ public class CurvePointService {
         existing.setAsOfDate(form.getAsOfDate());
         existing.setTerm(form.getTerm());
         existing.setValue(form.getValue());
-        return curvePointRepository.save(existing);
+        return existing;
     }
 
     @Transactional
