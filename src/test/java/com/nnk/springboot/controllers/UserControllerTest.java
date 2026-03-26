@@ -1,6 +1,7 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.User;
+import com.nnk.springboot.dto.UserForm;
 import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -128,7 +129,7 @@ class UserControllerTest {
 
     @Test
     void updateUser_whenValidInput_shouldRedirectToList() throws Exception {
-        when(userService.update(eq(1), any())).thenReturn(new User("user1", "Test1234!", "Full Name", "USER"));
+        when(userService.update(eq(1), any(UserForm.class))).thenReturn(new User("user1", "Test1234!", "Full Name", "USER"));
 
         mockMvc.perform(post("/admin/user/update/1")
                         .with(csrf())

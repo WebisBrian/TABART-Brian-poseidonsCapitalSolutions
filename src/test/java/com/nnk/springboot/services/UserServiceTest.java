@@ -1,6 +1,7 @@
 package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.User;
+import com.nnk.springboot.dto.UserForm;
 import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -57,23 +58,23 @@ class UserServiceTest {
 
     @Test
     void save_whenValidUser_shouldEncodePasswordAndPersist() {
-        User user = new User("john", "Password1!", "John Doe", "USER");
+        UserForm form = new UserForm(null, "john", "Password1!", "John Doe", "USER");
         when(passwordEncoder.encode("Password1!")).thenReturn("$2a$hashed");
-        when(userRepository.save(any(User.class))).thenReturn(user);
+        when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        userService.save(user);
+        userService.save(form);
 
         verify(passwordEncoder, times(1)).encode("Password1!");
-        verify(userRepository, times(1)).save(user);
+        verify(userRepository, times(1)).save(any(User.class));
     }
 
     @Test
     void save_shouldStoreEncodedPasswordNotPlaintext() {
-        User user = new User("john", "Password1!", "John Doe", "USER");
+        UserForm form = new UserForm(null, "john", "Password1!", "John Doe", "USER");
         when(passwordEncoder.encode(anyString())).thenReturn("$2a$hashed");
         when(userRepository.save(any(User.class))).thenAnswer(inv -> inv.getArgument(0));
 
-        User result = userService.save(user);
+        User result = userService.save(form);
 
         assertThat(result.getPassword()).isEqualTo("$2a$hashed");
     }
@@ -103,7 +104,7 @@ class UserServiceTest {
     @Test
     void update_whenIdExists_shouldUpdateFieldsAndEncodePassword() {
         User existing = new User("old", "OldPassword1!", "Old Name", "USER");
-        User form = new User("john", "NewPassword1!", "John Doe", "ADMIN");
+        UserForm form = new UserForm(null, "john", "NewPassword1!", "John Doe", "ADMIN");
         when(userRepository.findById(1)).thenReturn(Optional.of(existing));
         when(passwordEncoder.encode("NewPassword1!")).thenReturn("$2a$hashed");
         when(userRepository.save(any(User.class))).thenReturn(existing);
@@ -121,7 +122,7 @@ class UserServiceTest {
     void update_whenIdNotFound_shouldThrowException() {
         when(userRepository.findById(99)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> userService.update(99, new User()))
+        assertThatThrownBy(() -> userService.update(99, new UserForm()))
                 .isInstanceOf(ResourceNotFoundException.class);
     }
 

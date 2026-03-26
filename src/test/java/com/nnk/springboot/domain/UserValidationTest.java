@@ -75,33 +75,4 @@ class UserValidationTest {
         assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("role"));
     }
 
-    // --- password regex ---
-
-    @Test
-    void user_whenPasswordHasNoUppercase_shouldFailValidation() {
-        User user = new User("john", "password1!", "John Doe", "USER");
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("password"));
-    }
-
-    @Test
-    void user_whenPasswordHasNoDigit_shouldFailValidation() {
-        User user = new User("john", "Password!!", "John Doe", "USER");
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("password"));
-    }
-
-    @Test
-    void user_whenPasswordHasNoSpecialChar_shouldFailValidation() {
-        User user = new User("john", "Password1A", "John Doe", "USER");
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("password"));
-    }
-
-    @Test
-    void user_whenPasswordIsTooShort_shouldFailValidation() {
-        User user = new User("john", "Pa1!", "John Doe", "USER");
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("password"));
-    }
 }
