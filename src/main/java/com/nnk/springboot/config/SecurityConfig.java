@@ -47,7 +47,8 @@ public class SecurityConfig {
                         .accessDeniedPage("/app/error")
                 )
                 .formLogin(form -> form
-                        .defaultSuccessUrl("/bidList/list", true)
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/")
                 )
                 .logout(logout -> logout
                         .logoutUrl("/app-logout")
