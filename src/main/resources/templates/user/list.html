@@ -37,7 +37,9 @@
 					<td style="width: 25%" th:text="${user.role}"></td>
 					<td style="width: 15%" class="text-center">
 						<a th:href="@{/user/update/{id}(id=${user.id})}">Edit</a>&nbsp;|&nbsp;
-						<a th:href="@{/user/delete/{id}(id=${user.id})}">Delete</a>
+						<form th:action="@{/user/delete/{id}(id=${user.id})}" method="post" style="display:inline;">
+							<button type="submit" class="btn btn-link p-0">Delete</button>
+						</form>
 					</td>
 				</tr>
 			</tbody>

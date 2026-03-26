@@ -46,7 +46,9 @@
 					<td th:text="${rating.orderNumber}"></td>
 					<td style="width: 15%" class="text-center">
 						<a th:href="@{/rating/update/{id}(id=${rating.id})}">Edit</a>&nbsp;|&nbsp;
-						<a th:href="@{/rating/delete/{id}(id=${rating.id})}">Delete</a>
+						<form th:action="@{/rating/delete/{id}(id=${rating.id})}" method="post" style="display:inline;">
+							<button type="submit" class="btn btn-link p-0">Delete</button>
+						</form>
 					</td>
 				</tr>
 			</tbody>

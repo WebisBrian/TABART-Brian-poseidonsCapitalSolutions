@@ -44,7 +44,9 @@
 					<td th:text="${curvePoint.value}"></td>
 					<td style="width: 15%" class="text-center">
 						<a th:href="@{/curvePoint/update/{id}(id=${curvePoint.id})}">Edit</a>&nbsp;|&nbsp;
-						<a th:href="@{/curvePoint/delete/{id}(id=${curvePoint.id})}">Delete</a>
+						<form th:action="@{/curvePoint/delete/{id}(id=${curvePoint.id})}" method="post" style="display:inline;">
+							<button type="submit" class="btn btn-link p-0">Delete</button>
+						</form>
 					</td>
 				</tr>
 			</tbody>
