@@ -19,27 +19,27 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/list")
+    @GetMapping("/admin/user/list")
     public String home(Model model) {
         model.addAttribute("users", userService.findAll());
         return "user/list";
     }
 
-    @GetMapping("/user/add")
+    @GetMapping("/admin/user/add")
     public String addUser(User user) {
         return "user/add";
     }
 
-    @PostMapping("/user/validate")
+    @PostMapping("/admin/user/validate")
     public String validate(@Valid User user, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "user/add";
         }
         userService.save(user);
-        return "redirect:/user/list";
+        return "redirect:/admin/user/list";
     }
 
-    @GetMapping("/user/update/{id}")
+    @GetMapping("/admin/user/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         User user = userService.findById(id);
         user.setPassword("");
@@ -47,19 +47,19 @@ public class UserController {
         return "user/update";
     }
 
-    @PostMapping("/user/update/{id}")
+    @PostMapping("/admin/user/update/{id}")
     public String updateUser(@PathVariable("id") Integer id, @Valid User form,
                              BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "user/update";
         }
         userService.update(id, form);
-        return "redirect:/user/list";
+        return "redirect:/admin/user/list";
     }
 
-    @PostMapping("/user/delete/{id}")
+    @PostMapping("/admin/user/delete/{id}")
     public String deleteUser(@PathVariable("id") Integer id) {
         userService.delete(id);
-        return "redirect:/user/list";
+        return "redirect:/admin/user/list";
     }
 }
