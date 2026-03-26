@@ -89,7 +89,6 @@ class RuleNameServiceTest {
         RuleName existing = new RuleName("OldName", "OldDesc", "", "", "", "");
         RuleName form = new RuleName("Rule Name", "Description", "Json", "Template", "SQL", "SQL Part");
         when(ruleNameRepository.findById(1)).thenReturn(Optional.of(existing));
-        when(ruleNameRepository.save(any(RuleName.class))).thenReturn(existing);
 
         ruleNameService.update(1, form);
 
@@ -99,7 +98,7 @@ class RuleNameServiceTest {
         assertThat(existing.getTemplate()).isEqualTo("Template");
         assertThat(existing.getSqlStr()).isEqualTo("SQL");
         assertThat(existing.getSqlPart()).isEqualTo("SQL Part");
-        verify(ruleNameRepository, times(1)).save(existing);
+        verify(ruleNameRepository, times(0)).save(any());
     }
 
     @Test

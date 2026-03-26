@@ -89,14 +89,13 @@ class CurvePointServiceTest {
         CurvePoint existing = new CurvePoint(1, 1.0, 1.0);
         CurvePoint form = new CurvePoint(10, 10.0, 30.0);
         when(curvePointRepository.findById(1)).thenReturn(Optional.of(existing));
-        when(curvePointRepository.save(any(CurvePoint.class))).thenReturn(existing);
 
         curvePointService.update(1, form);
 
         assertThat(existing.getCurveId()).isEqualTo(10);
         assertThat(existing.getTerm()).isEqualTo(10.0);
         assertThat(existing.getValue()).isEqualTo(30.0);
-        verify(curvePointRepository, times(1)).save(existing);
+        verify(curvePointRepository, times(0)).save(any());
     }
 
     @Test

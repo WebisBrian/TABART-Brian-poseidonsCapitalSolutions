@@ -89,14 +89,13 @@ class BidListServiceTest {
         BidList existing = new BidList("OldAccount", "OldType", 5.0);
         BidList form = new BidList("NewAccount", "NewType", 20.0);
         when(bidListRepository.findById(1)).thenReturn(Optional.of(existing));
-        when(bidListRepository.save(any(BidList.class))).thenReturn(existing);
 
         bidListService.update(1, form);
 
         assertThat(existing.getAccount()).isEqualTo("NewAccount");
         assertThat(existing.getType()).isEqualTo("NewType");
         assertThat(existing.getBidQuantity()).isEqualTo(20.0);
-        verify(bidListRepository, times(1)).save(existing);
+        verify(bidListRepository, times(0)).save(any());
     }
 
     @Test
