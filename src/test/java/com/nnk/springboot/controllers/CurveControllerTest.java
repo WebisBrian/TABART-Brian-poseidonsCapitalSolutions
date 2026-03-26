@@ -134,7 +134,8 @@ class CurveControllerTest {
 
     @Test
     void deleteCurvePoint_whenAuthenticated_shouldRedirectToList() throws Exception {
-        mockMvc.perform(get("/curvePoint/delete/1"))
+        mockMvc.perform(post("/curvePoint/delete/1")
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/curvePoint/list"));
     }

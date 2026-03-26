@@ -154,7 +154,8 @@ class UserControllerTest {
 
     @Test
     void deleteUser_whenAdmin_shouldRedirectToList() throws Exception {
-        mockMvc.perform(get("/user/delete/1"))
+        mockMvc.perform(post("/user/delete/1")
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/user/list"));
     }

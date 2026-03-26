@@ -135,7 +135,8 @@ class BidListControllerTest {
 
     @Test
     void deleteBid_whenAuthenticated_shouldRedirectToList() throws Exception {
-        mockMvc.perform(get("/bidList/delete/1"))
+        mockMvc.perform(post("/bidList/delete/1")
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/bidList/list"));
     }

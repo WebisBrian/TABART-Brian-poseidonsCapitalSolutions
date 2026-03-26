@@ -134,7 +134,8 @@ class RuleNameControllerTest {
 
     @Test
     void deleteRuleName_whenAuthenticated_shouldRedirectToList() throws Exception {
-        mockMvc.perform(get("/ruleName/delete/1"))
+        mockMvc.perform(post("/ruleName/delete/1")
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/ruleName/list"));
     }

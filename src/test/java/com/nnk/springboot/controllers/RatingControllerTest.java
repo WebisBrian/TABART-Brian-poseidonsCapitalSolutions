@@ -136,7 +136,8 @@ class RatingControllerTest {
 
     @Test
     void deleteRating_whenAuthenticated_shouldRedirectToList() throws Exception {
-        mockMvc.perform(get("/rating/delete/1"))
+        mockMvc.perform(post("/rating/delete/1")
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/rating/list"));
     }

@@ -136,7 +136,8 @@ class TradeControllerTest {
 
     @Test
     void deleteTrade_whenAuthenticated_shouldRedirectToList() throws Exception {
-        mockMvc.perform(get("/trade/delete/1"))
+        mockMvc.perform(post("/trade/delete/1")
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/trade/list"));
     }
