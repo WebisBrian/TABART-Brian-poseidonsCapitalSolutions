@@ -43,9 +43,6 @@ public class SecurityConfig {
                         .requestMatchers("/user/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .exceptionHandling(ex -> ex
-                        .accessDeniedPage("/app/error")
-                )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/")
