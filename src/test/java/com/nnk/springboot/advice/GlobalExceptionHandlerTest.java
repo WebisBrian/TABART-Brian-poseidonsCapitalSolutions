@@ -3,6 +3,7 @@ package com.nnk.springboot.advice;
 import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Controller;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -29,6 +30,11 @@ class GlobalExceptionHandlerTest {
         public String triggerNotFound() {
             throw new ResourceNotFoundException("BidList not found for id: 99");
         }
+
+        @GetMapping("/test/forbidden")
+        public String triggerAccessDenied() {
+            throw new AccessDeniedException("Access denied");
+        }
     }
 
     @Test
@@ -44,5 +50,13 @@ class GlobalExceptionHandlerTest {
         mockMvc.perform(get("/test/notfound"))
                 .andExpect(status().isNotFound())
                 .andExpect(model().attribute("errorMessage", "BidList not found for id: 99"));
+    }
+
+    @Test
+    void whenAccessDeniedException_thrownFromController_shouldReturn403WithForbiddenView() throws Exception {
+        mockMvc.perform(get("/test/forbidden"))
+                .andExpect(status().isForbidden())
+                .andExpect(view().name("error/403"))
+                .andExpect(model().attributeExists("errorMsg"));
     }
 }
