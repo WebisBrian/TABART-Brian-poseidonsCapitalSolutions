@@ -56,7 +56,7 @@ class SecurityIntegrationTest {
     @Test
     @WithMockUser(username = "user", roles = "USER")
     void authenticatedUser_accessUserManagement_shouldBeForbidden() throws Exception {
-        mockMvc.perform(get("/user/list"))
+        mockMvc.perform(get("/admin/user/list"))
                 .andExpect(status().isForbidden());
     }
 
@@ -65,7 +65,7 @@ class SecurityIntegrationTest {
     @Test
     @WithMockUser(username = "admin", roles = "ADMIN")
     void authenticatedAdmin_accessUserManagement_shouldBeAllowed() throws Exception {
-        mockMvc.perform(get("/user/list"))
+        mockMvc.perform(get("/admin/user/list"))
                 .andExpect(status().isOk());
     }
 

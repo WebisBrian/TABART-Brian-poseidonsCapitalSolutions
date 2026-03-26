@@ -50,7 +50,7 @@ class UserControllerTest {
     void home_whenAdmin_shouldReturnListView() throws Exception {
         when(userService.findAll()).thenReturn(List.of(new User("user1", "Pass1!", "Full Name", "USER")));
 
-        mockMvc.perform(get("/user/list"))
+        mockMvc.perform(get("/admin/user/list"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/list"))
                 .andExpect(model().attributeExists("users"));
@@ -59,32 +59,32 @@ class UserControllerTest {
     @Test
     @WithMockUser(roles = "USER")
     void home_whenUser_shouldBeForbidden() throws Exception {
-        mockMvc.perform(get("/user/list"))
+        mockMvc.perform(get("/admin/user/list"))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     void addForm_whenAdmin_shouldReturnAddView() throws Exception {
-        mockMvc.perform(get("/user/add"))
+        mockMvc.perform(get("/admin/user/add"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/add"));
     }
 
     @Test
     void validate_whenValidInput_shouldRedirectToList() throws Exception {
-        mockMvc.perform(post("/user/validate")
+        mockMvc.perform(post("/admin/user/validate")
                         .with(csrf())
                         .param("username", "testUser")
                         .param("password", "Test1234!")
                         .param("fullname", "Test User")
                         .param("role", "USER"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/user/list"));
+                .andExpect(redirectedUrl("/admin/user/list"));
     }
 
     @Test
     void validate_whenUsernameBlank_shouldReturnAddView() throws Exception {
-        mockMvc.perform(post("/user/validate")
+        mockMvc.perform(post("/admin/user/validate")
                         .with(csrf())
                         .param("username", "")
                         .param("password", "Test1234!")
@@ -97,7 +97,7 @@ class UserControllerTest {
     @Test
     void validate_whenPasswordInvalid_shouldReturnAddView() throws Exception {
         // password without uppercase → @Pattern violated
-        mockMvc.perform(post("/user/validate")
+        mockMvc.perform(post("/admin/user/validate")
                         .with(csrf())
                         .param("username", "testUser")
                         .param("password", "weakpass1!")
@@ -111,7 +111,7 @@ class UserControllerTest {
     void showUpdateForm_whenIdExists_shouldReturnUpdateViewWithClearedPassword() throws Exception {
         when(userService.findById(1)).thenReturn(new User("user1", "HashedPass1!", "Full Name", "USER"));
 
-        mockMvc.perform(get("/user/update/1"))
+        mockMvc.perform(get("/admin/user/update/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("user/update"))
                 .andExpect(model().attribute("user", hasProperty("password", emptyString())));
@@ -121,7 +121,7 @@ class UserControllerTest {
     void showUpdateForm_whenIdNotFound_shouldReturnErrorView() throws Exception {
         when(userService.findById(99)).thenThrow(new ResourceNotFoundException("User not found for id: 99"));
 
-        mockMvc.perform(get("/user/update/99"))
+        mockMvc.perform(get("/admin/user/update/99"))
                 .andExpect(status().isNotFound())
                 .andExpect(view().name("error/error"));
     }
@@ -130,19 +130,19 @@ class UserControllerTest {
     void updateUser_whenValidInput_shouldRedirectToList() throws Exception {
         when(userService.update(eq(1), any())).thenReturn(new User("user1", "Test1234!", "Full Name", "USER"));
 
-        mockMvc.perform(post("/user/update/1")
+        mockMvc.perform(post("/admin/user/update/1")
                         .with(csrf())
                         .param("username", "testUser")
                         .param("password", "Test1234!")
                         .param("fullname", "Test User")
                         .param("role", "USER"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/user/list"));
+                .andExpect(redirectedUrl("/admin/user/list"));
     }
 
     @Test
     void updateUser_whenInvalidInput_shouldReturnUpdateView() throws Exception {
-        mockMvc.perform(post("/user/update/1")
+        mockMvc.perform(post("/admin/user/update/1")
                         .with(csrf())
                         .param("username", "")
                         .param("password", "Test1234!")
@@ -154,9 +154,9 @@ class UserControllerTest {
 
     @Test
     void deleteUser_whenAdmin_shouldRedirectToList() throws Exception {
-        mockMvc.perform(post("/user/delete/1")
+        mockMvc.perform(post("/admin/user/delete/1")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/user/list"));
+                .andExpect(redirectedUrl("/admin/user/list"));
     }
 }
