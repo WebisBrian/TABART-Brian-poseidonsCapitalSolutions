@@ -1,6 +1,7 @@
 package com.nnk.springboot.services;
 
 import com.nnk.springboot.domain.User;
+import com.nnk.springboot.dto.UserForm;
 import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,15 +32,15 @@ public class UserService {
     }
 
     /**
-     * Encode le mot de passe en clair puis persiste l'utilisateur.
-     * À appeler avec le mot de passe en clair — le hachage BCrypt est appliqué ici.
+     * Crée un utilisateur depuis le formulaire.
+     * Encode le mot de passe en clair avant persistance.
      *
-     * @param user l'utilisateur à sauvegarder (mot de passe en clair)
+     * @param form le DTO de formulaire (mot de passe en clair)
      * @return l'utilisateur persisté
      */
     @Transactional
-    public User save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public User save(UserForm form) {
+        User user = new User(form.getUsername(), passwordEncoder.encode(form.getPassword()), form.getFullname(), form.getRole());
         return userRepository.save(user);
     }
 
@@ -57,22 +58,22 @@ public class UserService {
     }
 
     /**
-     * Met à jour les informations d'un utilisateur existant.
+     * Met à jour les informations d'un utilisateur existant depuis le formulaire.
      * Le mot de passe fourni en clair est encodé avant persistance.
      *
      * @param id   l'identifiant de l'utilisateur à mettre à jour
-     * @param form les nouvelles valeurs à appliquer
+     * @param form le DTO de formulaire contenant les nouvelles valeurs
      * @return l'utilisateur mis à jour et persisté
      * @throws ResourceNotFoundException si aucun utilisateur n'est trouvé pour cet id
      */
     @Transactional
-    public User update(Integer id, User form) {
+    public User update(Integer id, UserForm form) {
         User existing = findById(id);
         existing.setUsername(form.getUsername());
         existing.setFullname(form.getFullname());
         existing.setRole(form.getRole());
-        existing.setPassword(form.getPassword());
-        return save(existing);
+        existing.setPassword(passwordEncoder.encode(form.getPassword()));
+        return userRepository.save(existing);
     }
 
     /**
