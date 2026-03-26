@@ -55,8 +55,8 @@ public class TradeController {
         return "redirect:/trade/list";
     }
 
-    @GetMapping("/trade/delete/{id}")
-    public String deleteTrade(@PathVariable("id") Integer id, Model model) {
+    @PostMapping("/trade/delete/{id}")
+    public String deleteTrade(@PathVariable("id") Integer id) {
         tradeService.delete(id);
         return "redirect:/trade/list";
     }

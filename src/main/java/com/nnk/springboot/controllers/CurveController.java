@@ -55,8 +55,8 @@ public class CurveController {
         return "redirect:/curvePoint/list";
     }
 
-    @GetMapping("/curvePoint/delete/{id}")
-    public String deleteCurvePoint(@PathVariable("id") Integer id, Model model) {
+    @PostMapping("/curvePoint/delete/{id}")
+    public String deleteCurvePoint(@PathVariable("id") Integer id) {
         curvePointService.delete(id);
         return "redirect:/curvePoint/list";
     }

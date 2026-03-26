@@ -55,8 +55,8 @@ public class RatingController {
         return "redirect:/rating/list";
     }
 
-    @GetMapping("/rating/delete/{id}")
-    public String deleteRating(@PathVariable("id") Integer id, Model model) {
+    @PostMapping("/rating/delete/{id}")
+    public String deleteRating(@PathVariable("id") Integer id) {
         ratingService.delete(id);
         return "redirect:/rating/list";
     }
