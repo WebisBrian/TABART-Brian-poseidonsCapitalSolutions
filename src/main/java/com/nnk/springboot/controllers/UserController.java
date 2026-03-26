@@ -1,12 +1,14 @@
 package com.nnk.springboot.controllers;
 
 import com.nnk.springboot.domain.User;
+import com.nnk.springboot.dto.UserForm;
 import com.nnk.springboot.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -26,12 +28,13 @@ public class UserController {
     }
 
     @GetMapping("/admin/user/add")
-    public String addUser(User user) {
+    public String addUser(Model model) {
+        model.addAttribute("user", new UserForm());
         return "user/add";
     }
 
     @PostMapping("/admin/user/validate")
-    public String validate(@Valid User user, BindingResult result, Model model) {
+    public String validate(@ModelAttribute("user") @Valid UserForm user, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "user/add";
         }
@@ -42,13 +45,13 @@ public class UserController {
     @GetMapping("/admin/user/update/{id}")
     public String showUpdateForm(@PathVariable("id") Integer id, Model model) {
         User user = userService.findById(id);
-        user.setPassword("");
-        model.addAttribute("user", user);
+        UserForm form = new UserForm(user.getId(), user.getUsername(), "", user.getFullname(), user.getRole());
+        model.addAttribute("user", form);
         return "user/update";
     }
 
     @PostMapping("/admin/user/update/{id}")
-    public String updateUser(@PathVariable("id") Integer id, @Valid User form,
+    public String updateUser(@PathVariable("id") Integer id, @ModelAttribute("user") @Valid UserForm form,
                              BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "user/update";
