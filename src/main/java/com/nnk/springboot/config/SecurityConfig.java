@@ -22,11 +22,12 @@ public class SecurityConfig {
      * <p>Règles d'accès :</p>
      * <ul>
      *   <li>{@code /login}, ressources statiques : accessibles sans authentification</li>
-     *   <li>{@code /user/**} : réservé au rôle {@code ADMIN}</li>
+     *   <li>{@code /admin/**} : réservé au rôle {@code ADMIN}</li>
      *   <li>Toutes les autres routes : tout utilisateur authentifié ({@code USER} ou {@code ADMIN})</li>
      * </ul>
      *
-     * <p>En cas d'accès refusé (403), l'utilisateur est redirigé vers {@code /app/error}.</p>
+     * <p>En cas d'accès refusé (403), Spring Boot résout automatiquement la vue
+     * {@code error/403.html} via son mécanisme d'erreur par défaut.</p>
      *
      * @param http l'objet HttpSecurity à configurer
      * @return la SecurityFilterChain configurée
