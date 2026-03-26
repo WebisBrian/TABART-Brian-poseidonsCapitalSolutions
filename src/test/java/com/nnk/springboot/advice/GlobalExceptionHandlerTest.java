@@ -35,7 +35,7 @@ class GlobalExceptionHandlerTest {
     void whenResourceNotFoundException_shouldReturn404WithErrorView() throws Exception {
         mockMvc.perform(get("/test/notfound"))
                 .andExpect(status().isNotFound())
-                .andExpect(view().name("error"))
+                .andExpect(view().name("error/error"))
                 .andExpect(model().attributeExists("errorMessage"));
     }
 

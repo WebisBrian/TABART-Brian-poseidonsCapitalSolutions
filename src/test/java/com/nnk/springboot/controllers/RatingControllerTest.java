@@ -108,7 +108,7 @@ class RatingControllerTest {
 
         mockMvc.perform(get("/rating/update/99"))
                 .andExpect(status().isNotFound())
-                .andExpect(view().name("error"));
+                .andExpect(view().name("error/error"));
     }
 
     @Test

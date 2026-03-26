@@ -108,7 +108,7 @@ class TradeControllerTest {
 
         mockMvc.perform(get("/trade/update/99"))
                 .andExpect(status().isNotFound())
-                .andExpect(view().name("error"));
+                .andExpect(view().name("error/error"));
     }
 
     @Test

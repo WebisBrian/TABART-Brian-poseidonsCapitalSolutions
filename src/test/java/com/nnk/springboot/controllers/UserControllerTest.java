@@ -123,7 +123,7 @@ class UserControllerTest {
 
         mockMvc.perform(get("/user/update/99"))
                 .andExpect(status().isNotFound())
-                .andExpect(view().name("error"));
+                .andExpect(view().name("error/error"));
     }
 
     @Test
