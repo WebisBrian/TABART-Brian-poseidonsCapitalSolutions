@@ -15,6 +15,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -47,7 +51,8 @@ class BidListControllerTest {
 
     @Test
     void home_whenAuthenticated_shouldReturnListView() throws Exception {
-        when(bidListService.findAll()).thenReturn(List.of(new BidList("acc", "type", 10.0)));
+        Page<BidList> page = new PageImpl<>(List.of(new BidList("acc", "type", 10.0)));
+        when(bidListService.findAll(any(Pageable.class))).thenReturn(page);
 
         mockMvc.perform(get("/bidList/list"))
                 .andExpect(status().isOk())

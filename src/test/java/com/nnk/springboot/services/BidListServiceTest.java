@@ -9,6 +9,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -29,23 +35,25 @@ class BidListServiceTest {
     // --- findAll ---
 
     @Test
-    void findAll_whenRepositoryReturnsItems_shouldReturnList() {
+    void findAll_whenRepositoryReturnsItems_shouldReturnPagedResult() {
         BidList bid = new BidList("Account", "Type", 10.0);
-        when(bidListRepository.findAll()).thenReturn(List.of(bid));
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "bidListId"));
+        when(bidListRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of(bid)));
 
-        List<BidList> result = bidListService.findAll();
+        Page<BidList> result = bidListService.findAll(pageable);
 
-        assertThat(result).hasSize(1);
-        assertThat(result.getFirst().getAccount()).isEqualTo("Account");
+        assertThat(result.getContent()).hasSize(1);
+        assertThat(result.getContent().getFirst().getAccount()).isEqualTo("Account");
     }
 
     @Test
-    void findAll_whenRepositoryReturnsEmpty_shouldReturnEmptyList() {
-        when(bidListRepository.findAll()).thenReturn(List.of());
+    void findAll_whenRepositoryReturnsEmpty_shouldReturnEmptyPage() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "bidListId"));
+        when(bidListRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of()));
 
-        List<BidList> result = bidListService.findAll();
+        Page<BidList> result = bidListService.findAll(pageable);
 
-        assertThat(result).isEmpty();
+        assertThat(result.getContent()).isEmpty();
     }
 
     // --- save ---
