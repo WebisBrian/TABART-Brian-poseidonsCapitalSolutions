@@ -133,10 +133,33 @@ class RuleNameControllerTest {
     }
 
     @Test
+    void updateRuleName_whenIdNotFound_shouldReturnErrorView() throws Exception {
+        when(ruleNameService.update(eq(99), any())).thenThrow(new ResourceNotFoundException("RuleName not found for id: 99"));
+
+        mockMvc.perform(post("/ruleName/update/99")
+                        .with(csrf())
+                        .param("name", "testRule")
+                        .param("description", "a description"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("error/error"));
+    }
+
+    @Test
     void deleteRuleName_whenAuthenticated_shouldRedirectToList() throws Exception {
         mockMvc.perform(post("/ruleName/delete/1")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/ruleName/list"));
+    }
+
+    @Test
+    void deleteRuleName_whenIdNotFound_shouldReturnErrorView() throws Exception {
+        org.mockito.Mockito.doThrow(new ResourceNotFoundException("RuleName not found for id: 99"))
+                .when(ruleNameService).delete(99);
+
+        mockMvc.perform(post("/ruleName/delete/99")
+                        .with(csrf()))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("error/error"));
     }
 }

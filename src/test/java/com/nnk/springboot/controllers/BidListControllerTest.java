@@ -134,10 +134,34 @@ class BidListControllerTest {
     }
 
     @Test
+    void updateBid_whenIdNotFound_shouldReturnErrorView() throws Exception {
+        when(bidListService.update(eq(99), any())).thenThrow(new ResourceNotFoundException("BidList not found for id: 99"));
+
+        mockMvc.perform(post("/bidList/update/99")
+                        .with(csrf())
+                        .param("account", "testAccount")
+                        .param("type", "testType")
+                        .param("bidQuantity", "10.0"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("error/error"));
+    }
+
+    @Test
     void deleteBid_whenAuthenticated_shouldRedirectToList() throws Exception {
         mockMvc.perform(post("/bidList/delete/1")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/bidList/list"));
+    }
+
+    @Test
+    void deleteBid_whenIdNotFound_shouldReturnErrorView() throws Exception {
+        org.mockito.Mockito.doThrow(new ResourceNotFoundException("BidList not found for id: 99"))
+                .when(bidListService).delete(99);
+
+        mockMvc.perform(post("/bidList/delete/99")
+                        .with(csrf()))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("error/error"));
     }
 }

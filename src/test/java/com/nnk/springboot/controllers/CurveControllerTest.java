@@ -133,10 +133,34 @@ class CurveControllerTest {
     }
 
     @Test
+    void updateCurvePoint_whenIdNotFound_shouldReturnErrorView() throws Exception {
+        when(curvePointService.update(eq(99), any())).thenThrow(new ResourceNotFoundException("CurvePoint not found for id: 99"));
+
+        mockMvc.perform(post("/curvePoint/update/99")
+                        .with(csrf())
+                        .param("curveId", "1")
+                        .param("term", "1.0")
+                        .param("value", "2.0"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("error/error"));
+    }
+
+    @Test
     void deleteCurvePoint_whenAuthenticated_shouldRedirectToList() throws Exception {
         mockMvc.perform(post("/curvePoint/delete/1")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/curvePoint/list"));
+    }
+
+    @Test
+    void deleteCurvePoint_whenIdNotFound_shouldReturnErrorView() throws Exception {
+        org.mockito.Mockito.doThrow(new ResourceNotFoundException("CurvePoint not found for id: 99"))
+                .when(curvePointService).delete(99);
+
+        mockMvc.perform(post("/curvePoint/delete/99")
+                        .with(csrf()))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("error/error"));
     }
 }

@@ -154,10 +154,35 @@ class UserControllerTest {
     }
 
     @Test
+    void updateUser_whenIdNotFound_shouldReturnErrorView() throws Exception {
+        when(userService.update(eq(99), any(UserForm.class))).thenThrow(new ResourceNotFoundException("User not found for id: 99"));
+
+        mockMvc.perform(post("/admin/user/update/99")
+                        .with(csrf())
+                        .param("username", "testUser")
+                        .param("password", "Test1234!")
+                        .param("fullname", "Test User")
+                        .param("role", "USER"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("error/error"));
+    }
+
+    @Test
     void deleteUser_whenAdmin_shouldRedirectToList() throws Exception {
         mockMvc.perform(post("/admin/user/delete/1")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/user/list"));
+    }
+
+    @Test
+    void deleteUser_whenIdNotFound_shouldReturnErrorView() throws Exception {
+        org.mockito.Mockito.doThrow(new ResourceNotFoundException("User not found for id: 99"))
+                .when(userService).delete(99);
+
+        mockMvc.perform(post("/admin/user/delete/99")
+                        .with(csrf()))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("error/error"));
     }
 }

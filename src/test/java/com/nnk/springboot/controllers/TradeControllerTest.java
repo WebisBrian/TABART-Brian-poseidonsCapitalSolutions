@@ -135,10 +135,34 @@ class TradeControllerTest {
     }
 
     @Test
+    void updateTrade_whenIdNotFound_shouldReturnErrorView() throws Exception {
+        when(tradeService.update(eq(99), any())).thenThrow(new ResourceNotFoundException("Trade not found for id: 99"));
+
+        mockMvc.perform(post("/trade/update/99")
+                        .with(csrf())
+                        .param("account", "testAccount")
+                        .param("type", "testType")
+                        .param("buyQuantity", "10.0"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("error/error"));
+    }
+
+    @Test
     void deleteTrade_whenAuthenticated_shouldRedirectToList() throws Exception {
         mockMvc.perform(post("/trade/delete/1")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/trade/list"));
+    }
+
+    @Test
+    void deleteTrade_whenIdNotFound_shouldReturnErrorView() throws Exception {
+        org.mockito.Mockito.doThrow(new ResourceNotFoundException("Trade not found for id: 99"))
+                .when(tradeService).delete(99);
+
+        mockMvc.perform(post("/trade/delete/99")
+                        .with(csrf()))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("error/error"));
     }
 }

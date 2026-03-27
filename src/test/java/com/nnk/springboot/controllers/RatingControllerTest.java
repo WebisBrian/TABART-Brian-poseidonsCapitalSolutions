@@ -135,10 +135,35 @@ class RatingControllerTest {
     }
 
     @Test
+    void updateRating_whenIdNotFound_shouldReturnErrorView() throws Exception {
+        when(ratingService.update(eq(99), any())).thenThrow(new ResourceNotFoundException("Rating not found for id: 99"));
+
+        mockMvc.perform(post("/rating/update/99")
+                        .with(csrf())
+                        .param("moodysRating", "Aaa")
+                        .param("sandPRating", "AAA")
+                        .param("fitchRating", "AAA")
+                        .param("orderNumber", "1"))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("error/error"));
+    }
+
+    @Test
     void deleteRating_whenAuthenticated_shouldRedirectToList() throws Exception {
         mockMvc.perform(post("/rating/delete/1")
                         .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/rating/list"));
+    }
+
+    @Test
+    void deleteRating_whenIdNotFound_shouldReturnErrorView() throws Exception {
+        org.mockito.Mockito.doThrow(new ResourceNotFoundException("Rating not found for id: 99"))
+                .when(ratingService).delete(99);
+
+        mockMvc.perform(post("/rating/delete/99")
+                        .with(csrf()))
+                .andExpect(status().isNotFound())
+                .andExpect(view().name("error/error"));
     }
 }
