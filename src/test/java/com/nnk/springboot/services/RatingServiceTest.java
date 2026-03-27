@@ -9,6 +9,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -29,23 +35,25 @@ class RatingServiceTest {
     // --- findAll ---
 
     @Test
-    void findAll_whenRepositoryReturnsItems_shouldReturnList() {
+    void findAll_whenRepositoryReturnsItems_shouldReturnPagedResult() {
         Rating rating = new Rating("Moodys Rating", "Sand PRating", "Fitch Rating", 10);
-        when(ratingRepository.findAll()).thenReturn(List.of(rating));
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
+        when(ratingRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of(rating)));
 
-        List<Rating> result = ratingService.findAll();
+        Page<Rating> result = ratingService.findAll(pageable);
 
-        assertThat(result).hasSize(1);
-        assertThat(result.getFirst().getOrderNumber()).isEqualTo(10);
+        assertThat(result.getContent()).hasSize(1);
+        assertThat(result.getContent().getFirst().getOrderNumber()).isEqualTo(10);
     }
 
     @Test
-    void findAll_whenRepositoryReturnsEmpty_shouldReturnEmptyList() {
-        when(ratingRepository.findAll()).thenReturn(List.of());
+    void findAll_whenRepositoryReturnsEmpty_shouldReturnEmptyPage() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
+        when(ratingRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of()));
 
-        List<Rating> result = ratingService.findAll();
+        Page<Rating> result = ratingService.findAll(pageable);
 
-        assertThat(result).isEmpty();
+        assertThat(result.getContent()).isEmpty();
     }
 
     // --- save ---

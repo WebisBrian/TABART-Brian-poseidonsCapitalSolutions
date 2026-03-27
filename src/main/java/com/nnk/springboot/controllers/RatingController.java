@@ -3,12 +3,15 @@ package com.nnk.springboot.controllers;
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.services.RatingService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class RatingController {
@@ -20,8 +23,9 @@ public class RatingController {
     }
 
     @GetMapping("/rating/list")
-    public String home(Model model) {
-        model.addAttribute("ratings", ratingService.findAll());
+    public String home(@RequestParam(defaultValue = "0") int page, Model model) {
+        model.addAttribute("ratings", ratingService.findAll(
+                PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "id"))));
         return "rating/list";
     }
 

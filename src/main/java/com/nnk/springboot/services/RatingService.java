@@ -3,10 +3,10 @@ package com.nnk.springboot.services;
 import com.nnk.springboot.domain.Rating;
 import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.RatingRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class RatingService {
@@ -18,8 +18,8 @@ public class RatingService {
     }
 
     @Transactional(readOnly = true)
-    public List<Rating> findAll() {
-        return ratingRepository.findAll();
+    public Page<Rating> findAll(Pageable pageable) {
+        return ratingRepository.findAll(pageable);
     }
 
     @Transactional
