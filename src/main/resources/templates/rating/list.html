@@ -25,7 +25,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="rating : ${ratings}">
+				<tr th:each="rating : ${ratings.content}">
 					<td style="width: 10%" th:text="${rating.id}"></td>
 					<td th:text="${rating.moodysRating}"></td>
 					<td th:text="${rating.sandPRating}"></td>
@@ -40,6 +40,20 @@
 				</tr>
 			</tbody>
 		</table>
+		<nav th:if="${ratings.totalPages > 1}">
+			<ul class="pagination">
+				<li class="page-item" th:classappend="${!ratings.hasPrevious()} ? 'disabled'">
+					<a class="page-link" th:href="@{/rating/list(page=${ratings.number - 1})}">Précédent</a>
+				</li>
+				<li class="page-item" th:each="i : ${#numbers.sequence(0, ratings.totalPages - 1)}"
+					th:classappend="${i == ratings.number} ? 'active'">
+					<a class="page-link" th:href="@{/rating/list(page=${i})}" th:text="${i + 1}"></a>
+				</li>
+				<li class="page-item" th:classappend="${!ratings.hasNext()} ? 'disabled'">
+					<a class="page-link" th:href="@{/rating/list(page=${ratings.number + 1})}">Suivant</a>
+				</li>
+			</ul>
+		</nav>
 	</div>
 </div>
 </body>
