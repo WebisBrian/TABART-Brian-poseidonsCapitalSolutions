@@ -9,6 +9,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -29,23 +35,25 @@ class CurvePointServiceTest {
     // --- findAll ---
 
     @Test
-    void findAll_whenRepositoryReturnsItems_shouldReturnList() {
+    void findAll_whenRepositoryReturnsItems_shouldReturnPagedResult() {
         CurvePoint cp = new CurvePoint(10, 10.0, 30.0);
-        when(curvePointRepository.findAll()).thenReturn(List.of(cp));
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
+        when(curvePointRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of(cp)));
 
-        List<CurvePoint> result = curvePointService.findAll();
+        Page<CurvePoint> result = curvePointService.findAll(pageable);
 
-        assertThat(result).hasSize(1);
-        assertThat(result.getFirst().getTerm()).isEqualTo(10.0);
+        assertThat(result.getContent()).hasSize(1);
+        assertThat(result.getContent().getFirst().getTerm()).isEqualTo(10.0);
     }
 
     @Test
-    void findAll_whenRepositoryReturnsEmpty_shouldReturnEmptyList() {
-        when(curvePointRepository.findAll()).thenReturn(List.of());
+    void findAll_whenRepositoryReturnsEmpty_shouldReturnEmptyPage() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
+        when(curvePointRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of()));
 
-        List<CurvePoint> result = curvePointService.findAll();
+        Page<CurvePoint> result = curvePointService.findAll(pageable);
 
-        assertThat(result).isEmpty();
+        assertThat(result.getContent()).isEmpty();
     }
 
     // --- save ---
