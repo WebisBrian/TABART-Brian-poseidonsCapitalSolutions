@@ -29,6 +29,16 @@ class SecurityIntegrationTest {
                 .build();
     }
 
+    // --- Page de login ---
+
+    @Test
+    @WithMockUser
+    void authenticatedUser_accessLoginPage_shouldRedirectToHome() throws Exception {
+        mockMvc.perform(get("/login"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
+    }
+
     // --- Accès sans authentification ---
 
     @Test
