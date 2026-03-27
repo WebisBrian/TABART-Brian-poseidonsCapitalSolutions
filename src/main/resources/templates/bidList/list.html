@@ -24,7 +24,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="bidList : ${bidLists}">
+				<tr th:each="bidList : ${bidLists.content}">
 					<td style="width: 10%" th:text="${bidList.bidListId}"></td>
 					<td th:text="${bidList.account}"></td>
 					<td th:text="${bidList.type}"></td>
@@ -38,6 +38,20 @@
 				</tr>
 			</tbody>
 		</table>
+		<nav th:if="${bidLists.totalPages > 1}">
+			<ul class="pagination">
+				<li class="page-item" th:classappend="${!bidLists.hasPrevious()} ? 'disabled'">
+					<a class="page-link" th:href="@{/bidList/list(page=${bidLists.number - 1})}">Précédent</a>
+				</li>
+				<li class="page-item" th:each="i : ${#numbers.sequence(0, bidLists.totalPages - 1)}"
+					th:classappend="${i == bidLists.number} ? 'active'">
+					<a class="page-link" th:href="@{/bidList/list(page=${i})}" th:text="${i + 1}"></a>
+				</li>
+				<li class="page-item" th:classappend="${!bidLists.hasNext()} ? 'disabled'">
+					<a class="page-link" th:href="@{/bidList/list(page=${bidLists.number + 1})}">Suivant</a>
+				</li>
+			</ul>
+		</nav>
 	</div>
 </div>
 </body>
