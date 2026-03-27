@@ -24,7 +24,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="curvePoint : ${curvePoints}">
+				<tr th:each="curvePoint : ${curvePoints.content}">
 					<td style="width: 10%" th:text="${curvePoint.id}"></td>
 					<td th:text="${curvePoint.id}"></td>
 					<td th:text="${curvePoint.term}"></td>
@@ -38,6 +38,20 @@
 				</tr>
 			</tbody>
 		</table>
+		<nav th:if="${curvePoints.totalPages > 1}">
+			<ul class="pagination">
+				<li class="page-item" th:classappend="${!curvePoints.hasPrevious()} ? 'disabled'">
+					<a class="page-link" th:href="@{/curvePoint/list(page=${curvePoints.number - 1})}">Précédent</a>
+				</li>
+				<li class="page-item" th:each="i : ${#numbers.sequence(0, curvePoints.totalPages - 1)}"
+					th:classappend="${i == curvePoints.number} ? 'active'">
+					<a class="page-link" th:href="@{/curvePoint/list(page=${i})}" th:text="${i + 1}"></a>
+				</li>
+				<li class="page-item" th:classappend="${!curvePoints.hasNext()} ? 'disabled'">
+					<a class="page-link" th:href="@{/curvePoint/list(page=${curvePoints.number + 1})}">Suivant</a>
+				</li>
+			</ul>
+		</nav>
 	</div>
 </div>
 </body>
