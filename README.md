@@ -2,6 +2,8 @@
 
 Application back-end de gestion d'actifs financiers développée dans le cadre de la formation **OpenClassrooms – Développeur d'application Java**.
 
+![Présentation](/.readme/presentation.png)
+
 ## Stack technique
 
 | Composant              | Technologie                       |
