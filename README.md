@@ -31,7 +31,18 @@ Application back-end de gestion d'actifs financiers développée dans le cadre d
 
 Aucune installation de base de données requise. L'application démarre avec une base H2 en mémoire pré-chargée (~10 entrées par entité).
 
+**Linux / macOS / Git Bash**
 ```bash
+mvn spring-boot:run -Dspring-boot.run.profiles=demo
+```
+
+**Windows PowerShell**
+```powershell
+mvn spring-boot:run "-Dspring-boot.run.profiles=demo"
+```
+
+**Windows CMD**
+```cmd
 mvn spring-boot:run -Dspring-boot.run.profiles=demo
 ```
 
