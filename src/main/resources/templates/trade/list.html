@@ -24,7 +24,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="trade : ${trades}">
+				<tr th:each="trade : ${trades.content}">
 					<td style="width: 10%" th:text="${trade.tradeId}"></td>
 					<td th:text="${trade.account}"></td>
 					<td th:text="${trade.type}"></td>
@@ -38,6 +38,20 @@
 				</tr>
 			</tbody>
 		</table>
+		<nav th:if="${trades.totalPages > 1}">
+			<ul class="pagination">
+				<li class="page-item" th:classappend="${!trades.hasPrevious()} ? 'disabled'">
+					<a class="page-link" th:href="@{/trade/list(page=${trades.number - 1})}">Précédent</a>
+				</li>
+				<li class="page-item" th:each="i : ${#numbers.sequence(0, trades.totalPages - 1)}"
+					th:classappend="${i == trades.number} ? 'active'">
+					<a class="page-link" th:href="@{/trade/list(page=${i})}" th:text="${i + 1}"></a>
+				</li>
+				<li class="page-item" th:classappend="${!trades.hasNext()} ? 'disabled'">
+					<a class="page-link" th:href="@{/trade/list(page=${trades.number + 1})}">Suivant</a>
+				</li>
+			</ul>
+		</nav>
 	</div>
 </div>
 </body>

@@ -27,7 +27,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="ruleName : ${ruleNames}">
+				<tr th:each="ruleName : ${ruleNames.content}">
 					<td style="width: 10%" th:text="${ruleName.id}"></td>
 					<td th:text="${ruleName.name}"></td>
 					<td th:text="${ruleName.description}"></td>
@@ -44,6 +44,20 @@
 				</tr>
 			</tbody>
 		</table>
+		<nav th:if="${ruleNames.totalPages > 1}">
+			<ul class="pagination">
+				<li class="page-item" th:classappend="${!ruleNames.hasPrevious()} ? 'disabled'">
+					<a class="page-link" th:href="@{/ruleName/list(page=${ruleNames.number - 1})}">Précédent</a>
+				</li>
+				<li class="page-item" th:each="i : ${#numbers.sequence(0, ruleNames.totalPages - 1)}"
+					th:classappend="${i == ruleNames.number} ? 'active'">
+					<a class="page-link" th:href="@{/ruleName/list(page=${i})}" th:text="${i + 1}"></a>
+				</li>
+				<li class="page-item" th:classappend="${!ruleNames.hasNext()} ? 'disabled'">
+					<a class="page-link" th:href="@{/ruleName/list(page=${ruleNames.number + 1})}">Suivant</a>
+				</li>
+			</ul>
+		</nav>
 	</div>
 </div>
 </body>
