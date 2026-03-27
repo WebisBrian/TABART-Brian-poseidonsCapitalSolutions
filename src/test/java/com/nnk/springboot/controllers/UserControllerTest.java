@@ -15,6 +15,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
 import static org.hamcrest.Matchers.emptyString;
@@ -49,7 +53,8 @@ class UserControllerTest {
 
     @Test
     void home_whenAdmin_shouldReturnListView() throws Exception {
-        when(userService.findAll()).thenReturn(List.of(new User("user1", "Pass1!", "Full Name", "USER")));
+        Page<User> page = new PageImpl<>(List.of(new User("user1", "Pass1!", "Full Name", "USER")));
+        when(userService.findAll(any(Pageable.class))).thenReturn(page);
 
         mockMvc.perform(get("/admin/user/list"))
                 .andExpect(status().isOk())

@@ -3,10 +3,10 @@ package com.nnk.springboot.services;
 import com.nnk.springboot.domain.RuleName;
 import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.RuleNameRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class RuleNameService {
@@ -18,8 +18,8 @@ public class RuleNameService {
     }
 
     @Transactional(readOnly = true)
-    public List<RuleName> findAll() {
-        return ruleNameRepository.findAll();
+    public Page<RuleName> findAll(Pageable pageable) {
+        return ruleNameRepository.findAll(pageable);
     }
 
     @Transactional

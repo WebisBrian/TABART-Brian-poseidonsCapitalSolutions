@@ -9,6 +9,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -29,23 +35,25 @@ class RuleNameServiceTest {
     // --- findAll ---
 
     @Test
-    void findAll_whenRepositoryReturnsItems_shouldReturnList() {
+    void findAll_whenRepositoryReturnsItems_shouldReturnPagedResult() {
         RuleName rule = new RuleName("Rule Name", "Description", "Json", "Template", "SQL", "SQL Part");
-        when(ruleNameRepository.findAll()).thenReturn(List.of(rule));
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
+        when(ruleNameRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of(rule)));
 
-        List<RuleName> result = ruleNameService.findAll();
+        Page<RuleName> result = ruleNameService.findAll(pageable);
 
-        assertThat(result).hasSize(1);
-        assertThat(result.getFirst().getName()).isEqualTo("Rule Name");
+        assertThat(result.getContent()).hasSize(1);
+        assertThat(result.getContent().getFirst().getName()).isEqualTo("Rule Name");
     }
 
     @Test
-    void findAll_whenRepositoryReturnsEmpty_shouldReturnEmptyList() {
-        when(ruleNameRepository.findAll()).thenReturn(List.of());
+    void findAll_whenRepositoryReturnsEmpty_shouldReturnEmptyPage() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
+        when(ruleNameRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of()));
 
-        List<RuleName> result = ruleNameService.findAll();
+        Page<RuleName> result = ruleNameService.findAll(pageable);
 
-        assertThat(result).isEmpty();
+        assertThat(result.getContent()).isEmpty();
     }
 
     // --- save ---

@@ -5,10 +5,10 @@ import com.nnk.springboot.dto.UserForm;
 import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class UserService {
@@ -22,13 +22,14 @@ public class UserService {
     }
 
     /**
-     * Retourne la liste de tous les utilisateurs.
+     * Retourne une page d'utilisateurs triés par id décroissant.
      *
-     * @return liste de tous les utilisateurs
+     * @param pageable paramètres de pagination et de tri
+     * @return page d'utilisateurs
      */
     @Transactional(readOnly = true)
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     /**

@@ -3,12 +3,15 @@ package com.nnk.springboot.controllers;
 import com.nnk.springboot.domain.Trade;
 import com.nnk.springboot.services.TradeService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class TradeController {
@@ -20,8 +23,9 @@ public class TradeController {
     }
 
     @GetMapping("/trade/list")
-    public String home(Model model) {
-        model.addAttribute("trades", tradeService.findAll());
+    public String home(@RequestParam(defaultValue = "0") int page, Model model) {
+        model.addAttribute("trades", tradeService.findAll(
+                PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "tradeId"))));
         return "trade/list";
     }
 

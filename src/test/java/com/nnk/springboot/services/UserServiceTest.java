@@ -11,6 +11,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -35,23 +41,25 @@ class UserServiceTest {
     // --- findAll ---
 
     @Test
-    void findAll_whenRepositoryReturnsItems_shouldReturnList() {
+    void findAll_whenRepositoryReturnsItems_shouldReturnPagedResult() {
         User user = new User("john", "Password1!", "John Doe", "USER");
-        when(userRepository.findAll()).thenReturn(List.of(user));
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
+        when(userRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of(user)));
 
-        List<User> result = userService.findAll();
+        Page<User> result = userService.findAll(pageable);
 
-        assertThat(result).hasSize(1);
-        assertThat(result.getFirst().getUsername()).isEqualTo("john");
+        assertThat(result.getContent()).hasSize(1);
+        assertThat(result.getContent().getFirst().getUsername()).isEqualTo("john");
     }
 
     @Test
-    void findAll_whenRepositoryReturnsEmpty_shouldReturnEmptyList() {
-        when(userRepository.findAll()).thenReturn(List.of());
+    void findAll_whenRepositoryReturnsEmpty_shouldReturnEmptyPage() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
+        when(userRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of()));
 
-        List<User> result = userService.findAll();
+        Page<User> result = userService.findAll(pageable);
 
-        assertThat(result).isEmpty();
+        assertThat(result.getContent()).isEmpty();
     }
 
     // --- save ---

@@ -9,6 +9,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -29,23 +35,25 @@ class TradeServiceTest {
     // --- findAll ---
 
     @Test
-    void findAll_whenRepositoryReturnsItems_shouldReturnList() {
+    void findAll_whenRepositoryReturnsItems_shouldReturnPagedResult() {
         Trade trade = new Trade("Account", "Type", 10.0);
-        when(tradeRepository.findAll()).thenReturn(List.of(trade));
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "tradeId"));
+        when(tradeRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of(trade)));
 
-        List<Trade> result = tradeService.findAll();
+        Page<Trade> result = tradeService.findAll(pageable);
 
-        assertThat(result).hasSize(1);
-        assertThat(result.getFirst().getAccount()).isEqualTo("Account");
+        assertThat(result.getContent()).hasSize(1);
+        assertThat(result.getContent().getFirst().getAccount()).isEqualTo("Account");
     }
 
     @Test
-    void findAll_whenRepositoryReturnsEmpty_shouldReturnEmptyList() {
-        when(tradeRepository.findAll()).thenReturn(List.of());
+    void findAll_whenRepositoryReturnsEmpty_shouldReturnEmptyPage() {
+        Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "tradeId"));
+        when(tradeRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of()));
 
-        List<Trade> result = tradeService.findAll();
+        Page<Trade> result = tradeService.findAll(pageable);
 
-        assertThat(result).isEmpty();
+        assertThat(result.getContent()).isEmpty();
     }
 
     // --- save ---

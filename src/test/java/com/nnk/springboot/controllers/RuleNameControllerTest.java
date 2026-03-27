@@ -15,6 +15,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -47,7 +51,8 @@ class RuleNameControllerTest {
 
     @Test
     void home_whenAuthenticated_shouldReturnListView() throws Exception {
-        when(ruleNameService.findAll()).thenReturn(List.of(new RuleName("rule1", "desc", null, null, null, null)));
+        Page<RuleName> page = new PageImpl<>(List.of(new RuleName("rule1", "desc", null, null, null, null)));
+        when(ruleNameService.findAll(any(Pageable.class))).thenReturn(page);
 
         mockMvc.perform(get("/ruleName/list"))
                 .andExpect(status().isOk())
