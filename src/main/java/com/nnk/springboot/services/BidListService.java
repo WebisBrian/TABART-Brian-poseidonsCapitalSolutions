@@ -3,10 +3,10 @@ package com.nnk.springboot.services;
 import com.nnk.springboot.domain.BidList;
 import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.BidListRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 public class BidListService {
@@ -18,8 +18,8 @@ public class BidListService {
     }
 
     @Transactional(readOnly = true)
-    public List<BidList> findAll() {
-        return bidListRepository.findAll();
+    public Page<BidList> findAll(Pageable pageable) {
+        return bidListRepository.findAll(pageable);
     }
 
     @Transactional
