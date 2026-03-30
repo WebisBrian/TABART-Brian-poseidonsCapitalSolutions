@@ -1,6 +1,8 @@
 package com.nnk.springboot.config;
 
 import com.nnk.springboot.repositories.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +14,8 @@ import java.util.List;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
+
+    private static final Logger log = LoggerFactory.getLogger(CustomUserDetailsService.class);
 
     private final UserRepository userRepository;
 
@@ -31,9 +35,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         com.nnk.springboot.domain.User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(
-                        "Utilisateur introuvable : " + username));
+                .orElseThrow(() -> {
+                    log.warn("Tentative de connexion échouée — utilisateur introuvable : {}", username);
+                    return new UsernameNotFoundException("Utilisateur introuvable : " + username);
+                });
 
+        log.info("Authentification réussie pour l'utilisateur : {}", username);
         return new User(
                 user.getUsername(),
                 user.getPassword(),

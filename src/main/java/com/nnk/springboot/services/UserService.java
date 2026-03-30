@@ -4,6 +4,8 @@ import com.nnk.springboot.domain.User;
 import com.nnk.springboot.dto.UserForm;
 import com.nnk.springboot.exceptions.ResourceNotFoundException;
 import com.nnk.springboot.repositories.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserService {
+
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -42,7 +46,9 @@ public class UserService {
     @Transactional
     public User save(UserForm form) {
         User user = new User(form.getUsername(), passwordEncoder.encode(form.getPassword()), form.getFullname(), form.getRole());
-        return userRepository.save(user);
+        User saved = userRepository.save(user);
+        log.info("Utilisateur créé — id: {}, username: {}, role: {}", saved.getId(), saved.getUsername(), saved.getRole());
+        return saved;
     }
 
     /**
@@ -55,7 +61,10 @@ public class UserService {
     @Transactional(readOnly = true)
     public User findById(Integer id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found for id: " + id));
+                .orElseThrow(() -> {
+                    log.warn("Utilisateur introuvable — id: {}", id);
+                    return new ResourceNotFoundException("User not found for id: " + id);
+                });
     }
 
     /**
@@ -74,6 +83,7 @@ public class UserService {
         existing.setFullname(form.getFullname());
         existing.setRole(form.getRole());
         existing.setPassword(passwordEncoder.encode(form.getPassword()));
+        log.info("Utilisateur mis à jour — id: {}, username: {}, role: {}", id, existing.getUsername(), existing.getRole());
         return userRepository.save(existing);
     }
 
@@ -87,5 +97,6 @@ public class UserService {
     public void delete(Integer id) {
         User user = findById(id);
         userRepository.delete(user);
+        log.info("Utilisateur supprimé — id: {}, username: {}", id, user.getUsername());
     }
 }

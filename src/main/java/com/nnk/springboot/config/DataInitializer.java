@@ -12,6 +12,8 @@ import com.nnk.springboot.services.RatingService;
 import com.nnk.springboot.services.RuleNameService;
 import com.nnk.springboot.services.TradeService;
 import com.nnk.springboot.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
@@ -24,6 +26,8 @@ import org.springframework.stereotype.Component;
 @Component
 @Profile("demo")
 public class DataInitializer implements ApplicationRunner {
+
+    private static final Logger log = LoggerFactory.getLogger(DataInitializer.class);
 
     private final UserService userService;
     private final BidListService bidListService;
@@ -45,12 +49,14 @@ public class DataInitializer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
+        log.info("Initialisation des données de démonstration...");
         loadUsers();
         loadBidLists();
         loadCurvePoints();
         loadRatings();
         loadRuleNames();
         loadTrades();
+        log.info("Données de démonstration chargées avec succès.");
     }
 
     private void loadUsers() {
