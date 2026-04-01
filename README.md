@@ -2,23 +2,40 @@
 
 Application back-end de gestion d'actifs financiers développée dans le cadre de la formation **OpenClassrooms – Développeur d'application Java**.
 
+![Java](https://img.shields.io/badge/Java-25-blue?logo=openjdk)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.4-brightgreen?logo=springboot)
+![Tests](https://img.shields.io/badge/Tests-167-success?logo=junit5)
+![Coverage](https://img.shields.io/badge/Coverage-JaCoCo-informational)
+
 ![Présentation](/.readme/presentation.png)
 
 ## Stack technique
 
-| Composant              | Technologie                       |
-|------------------------|-----------------------------------|
-| Langage                | Java 25                           |
-| Framework              | Spring Boot 4.0.4                 |
-| Persistance            | Spring Data JPA / Hibernate       |
-| Sécurité               | Spring Security 6 (session-based) |
-| Encodage mot de passe  | BCrypt                            |
-| Template engine        | Thymeleaf  |
-| CSS                    | Bootstrap 4.3.1                   |
-| Base de données (prod) | MySQL               |
-| Base de données (test/demo) | H2 in-memory                 |
-| Build                  | Maven                             |
-| Tests                  | JUnit 5 + Mockito + MockMvc       |
+| Composant              | Technologie                                                                                              |
+|------------------------|----------------------------------------------------------------------------------------------------------|
+| Langage                | [Java 25](https://adoptium.net/temurin/releases/)                                                        |
+| Framework              | [Spring Boot 4.0.4](https://spring.io/projects/spring-boot)                                              |
+| Persistance            | [Spring Data JPA / Hibernate](https://spring.io/projects/spring-data-jpa)                               |
+| Sécurité               | [Spring Security 6](https://spring.io/projects/spring-security) (session-based)                         |
+| Encodage mot de passe  | BCrypt (inclus dans Spring Security)                                                                     |
+| Template engine        | [Thymeleaf](https://www.thymeleaf.org/)                                                                  |
+| CSS                    | [Bootstrap 4.3.1](https://getbootstrap.com/docs/4.3/getting-started/introduction/)                      |
+| Base de données (prod) | [MySQL](https://dev.mysql.com/doc/mysql-installation-guide/en/)                                          |
+| Base de données (test/demo) | [H2 in-memory](https://h2database.com/html/installation.html)                                       |
+| Build                  | [Maven](https://maven.apache.org/install.html)                                                           |
+| Tests                  | [JUnit 5](https://junit.org/junit5/docs/current/user-guide/) + [Mockito](https://site.mockito.org/) + MockMvc |
+
+## Prérequis
+
+Outils à installer avant de cloner le projet :
+
+| Outil | Version minimale | Lien d'installation |
+|-------|-----------------|---------------------|
+| JDK   | 25              | [Adoptium Temurin](https://adoptium.net/temurin/releases/) |
+| Maven | 3.9+            | [maven.apache.org](https://maven.apache.org/install.html) |
+| MySQL | 8.0+ *(prod uniquement)* | [dev.mysql.com](https://dev.mysql.com/doc/mysql-installation-guide/en/) |
+
+> Le mode démo utilise une base H2 in-memory : **aucune installation de base de données requise** pour le tester.
 
 ## Fonctionnalités
 
@@ -43,11 +60,6 @@ mvn spring-boot:run -Dspring-boot.run.profiles=demo
 mvn spring-boot:run "-Dspring-boot.run.profiles=demo"
 ```
 
-**Windows CMD**
-```cmd
-mvn spring-boot:run -Dspring-boot.run.profiles=demo
-```
-
 Accès : [http://localhost:8080](http://localhost:8080)
 
 | Compte  | Mot de passe | Rôle  | Accès                          |
@@ -66,6 +78,12 @@ mvn verify
 ## Environnement de développement (MySQL)
 
 Créer la base `demo` sur MySQL, définir les variables d'environnement puis démarrer :
+
+| Variable      | Description              | Valeur par défaut                      |
+|---------------|--------------------------|----------------------------------------|
+| `DB_URL`      | URL JDBC de la base      | `jdbc:mysql://localhost:3306/demo`     |
+| `DB_USERNAME` | Utilisateur MySQL        | `root`                                 |
+| `DB_PASSWORD` | Mot de passe MySQL       | `root`                                 |
 
 ```bash
 export DB_URL=jdbc:mysql://localhost:3306/demo
