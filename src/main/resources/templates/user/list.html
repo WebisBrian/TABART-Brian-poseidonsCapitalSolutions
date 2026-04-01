@@ -5,11 +5,11 @@
 <head>
 <meta charset="utf-8"/>
 <title>User Management - Poseidon</title>
-<link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/bootstrap.min.css">
 </head>
 <body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 <div class="container">
-	<div th:replace="~{fragments/navbar :: navbar}"></div>
 	<div class="row"><h2>User List</h2></div>
 	<div class="row">
 		<a href="/admin/user/add" class="btn btn-primary btn-sm">Add New</a>

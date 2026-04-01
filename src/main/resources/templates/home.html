@@ -6,17 +6,164 @@
 	<meta charset="utf-8"/>
 	<title>Poseidon Capital Solutions</title>
 	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<style>
+		.hero {
+			background-color: #1a1a2e;
+			color: #fff;
+			padding: 0;
+			overflow: hidden;
+			margin-top: -1.5rem;
+		}
+		.hero img {
+			width: 100%;
+			max-height: 380px;
+			object-fit: cover;
+			object-position: center;
+			display: block;
+			opacity: 0.85;
+		}
+		.hero-overlay {
+			position: relative;
+		}
+		.hero-text {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			padding: 2rem 2.5rem;
+			background: linear-gradient(to top, rgba(26,26,46,0.95) 60%, transparent);
+		}
+		.hero-text h1 {
+			font-size: 2rem;
+			font-weight: 700;
+			margin-bottom: 0.25rem;
+		}
+		.hero-text p {
+			font-size: 1rem;
+			opacity: 0.85;
+			margin-bottom: 0;
+		}
+		.section-card {
+			transition: box-shadow 0.2s;
+			border: 1px solid #dee2e6;
+		}
+		.section-card:hover {
+			box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+		}
+		.section-card .card-title {
+			font-weight: 600;
+		}
+		.section-icon {
+			font-size: 1.5rem;
+			margin-bottom: 0.5rem;
+			color: #343a40;
+		}
+	</style>
 </head>
 <body>
-<div class="container">
-	<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-	<div class="row mt-4">
-		<div class="col-12">
-			<h2>Welcome to Poseidon Capital Solutions</h2>
-			<p>Select a section from the navigation bar above to get started.</p>
+<!-- Hero -->
+<div class="hero">
+	<div class="hero-overlay">
+		<img src="/img/presentation.png" alt="Poseidon Capital Solutions">
+		<div class="hero-text">
+			<h1>Poseidon Capital Solutions</h1>
+			<p>Plateforme de gestion d'actifs financiers</p>
 		</div>
 	</div>
 </div>
+
+<!-- Cards -->
+<div class="container mt-4 mb-5">
+	<div class="row">
+		<div class="col-12 mb-3">
+			<h5 class="text-muted">Modules disponibles</h5>
+			<hr class="mt-1">
+		</div>
+	</div>
+	<div class="row">
+
+		<div class="col-md-4 mb-3">
+			<div class="card section-card h-100">
+				<div class="card-body">
+					<div class="section-icon">&#128200;</div>
+					<h6 class="card-title">Bid List</h6>
+					<p class="card-text text-muted small">Gérez les offres d'achat et leurs quantités.</p>
+				</div>
+				<div class="card-footer bg-white border-0">
+					<a href="/bidList/list" class="btn btn-dark btn-sm">Accéder</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-4 mb-3">
+			<div class="card section-card h-100">
+				<div class="card-body">
+					<div class="section-icon">&#128202;</div>
+					<h6 class="card-title">Curve Points</h6>
+					<p class="card-text text-muted small">Consultez et éditez les points de courbe de taux.</p>
+				</div>
+				<div class="card-footer bg-white border-0">
+					<a href="/curvePoint/list" class="btn btn-dark btn-sm">Accéder</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-4 mb-3">
+			<div class="card section-card h-100">
+				<div class="card-body">
+					<div class="section-icon">&#11088;</div>
+					<h6 class="card-title">Ratings</h6>
+					<p class="card-text text-muted small">Suivez les notations Moody's, S&amp;P et Fitch.</p>
+				</div>
+				<div class="card-footer bg-white border-0">
+					<a href="/rating/list" class="btn btn-dark btn-sm">Accéder</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-4 mb-3">
+			<div class="card section-card h-100">
+				<div class="card-body">
+					<div class="section-icon">&#128181;</div>
+					<h6 class="card-title">Trades</h6>
+					<p class="card-text text-muted small">Enregistrez et suivez les opérations de trading.</p>
+				</div>
+				<div class="card-footer bg-white border-0">
+					<a href="/trade/list" class="btn btn-dark btn-sm">Accéder</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-4 mb-3">
+			<div class="card section-card h-100">
+				<div class="card-body">
+					<div class="section-icon">&#128221;</div>
+					<h6 class="card-title">Rules</h6>
+					<p class="card-text text-muted small">Définissez les règles métier et leurs templates SQL.</p>
+				</div>
+				<div class="card-footer bg-white border-0">
+					<a href="/ruleName/list" class="btn btn-dark btn-sm">Accéder</a>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-4 mb-3" sec:authorize="hasRole('ADMIN')">
+			<div class="card section-card h-100 border-dark">
+				<div class="card-body">
+					<div class="section-icon">&#128100;</div>
+					<h6 class="card-title">Gestion des utilisateurs</h6>
+					<p class="card-text text-muted small">Créez et gérez les comptes utilisateurs. <span class="badge badge-dark">Admin</span></p>
+				</div>
+				<div class="card-footer bg-white border-0">
+					<a href="/admin/user/list" class="btn btn-dark btn-sm">Accéder</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
 </body>
 </html>

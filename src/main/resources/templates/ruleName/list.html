@@ -8,8 +8,8 @@
 <link rel="stylesheet" href="../../css/bootstrap.min.css" >
 </head>
 <body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 <div class="container">
-	<div th:replace="~{fragments/navbar :: navbar}"></div>
 	<div class="row"><h2>Rule List</h2></div>
 	<div class="row">
 		<a href="/ruleName/add" class="btn btn-primary btn-sm">Add New</a>
